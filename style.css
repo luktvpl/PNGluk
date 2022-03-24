@@ -1,0 +1,8 @@
+html {
+    background-color: rgb(253, 97, 123);
+}
+canvas {
+    left: 0px;
+    top: 0px;
+    position:absolute;
+}
