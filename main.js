@@ -1,5 +1,32 @@
 var c = document.getElementById("c").getContext("2d");
 var loudness;
+var data = {
+    s1 : {
+        loaded:true,
+        //1-tylko mówienie 2-mówianie i mruganie
+        type:1,
+        on: "./demo/on.png",
+        on: "./demo/om.png",
+        zn: "./demo/zn.png",
+        zm: "./demo/zm.png"
+    }
+};
+    //AS-aktualny stan
+    var ASon = new Image();
+    var ASom = new Image();
+    var ASzn = new Image();
+    var ASzm = new Image();
+function setstate(statedate){
+ 
+    ASon.src = statedate["on"];
+    ASom.src = statedate["om"];
+    ASzn.src = statedate["zn"];
+    ASzm.src = statedate["zm"];
+
+}
+setstate(data.s1);
+
+
 function start(){
     document.getElementById("c").width = window.innerWidth;
     document.getElementById("c").height = window.innerHeight;
@@ -10,9 +37,10 @@ function fix(){
     //c.drawImage(image, dx, dy, dWidth, dHeight);
     c.fillStyle = '#ff00ff';
     c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    c.drawImage(ASon,0,0,window.innerWidth/4,ASon.height/ASon.width*window.innerWidth/4);
     
 }
-
+fix();
 setInterval(fix,10)
 
 
