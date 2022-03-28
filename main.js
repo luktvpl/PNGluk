@@ -2,9 +2,17 @@ var c = document.getElementById("c").getContext("2d");
 var loudness;
 var x=0;
 var y=0;
+var tło ={
+    AS:0,
+    colors:['#ff00ff','#0033cc','#00ff00'],
+    location:["./ui/screen_pink.png","./ui/screen_blue.png","./ui/screen_green.png"]
+}
 var mruga = "n";
 var mówi = "z"
 var skacze = true;
+//wczytywanie obrazków obrazki (ui)
+
+//reszta skryptów
 var RenderData={
     doll:{
         x:0,
@@ -60,14 +68,17 @@ function start(){
 function render(){
     document.getElementById("c").width = window.innerWidth;
     document.getElementById("c").height = window.innerHeight;
-    c.fillStyle = '#ff00ff';
+    c.fillStyle = tło.colors[0];
     c.fillRect(0, 0, window.innerWidth, window.innerHeight);
     c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
-    
+    //var img = ((new Image).src="")
 }
 //podstawowe funkcje włączane
 render();
-recalcdata();
+setTimeout(() => {
+    recalcdata();
+}, 100);
+
 setInterval(render,16)
 setInterval(skoki,16)
 setInterval(chceck,100)
@@ -75,7 +86,7 @@ setInterval(chceck,100)
 var sila=0;
 function skoki(){
     if(skacze==true){
-        if(mówi=="o"){
+        if(mówi=="o"&&sila<3){
             sila +=0.3
         }else{
             if(y>=0){
@@ -87,7 +98,7 @@ function skoki(){
            
         }
         
-        if(y<-30&&sila>0){
+        if(y<-10&&sila>0){
             
         }else {
             y-=sila;
