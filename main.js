@@ -1,17 +1,81 @@
 var c = document.getElementById("c").getContext("2d");
 var loudness;
+var MocM=70;
 var x=0;
 var y=0;
 var tło ={
     AS:0,
     colors:['#ff00ff','#0033cc','#00ff00'],
-    location:["./ui/screen_pink.png","./ui/screen_blue.png","./ui/screen_green.png"]
 }
 var mruga = "n";
 var mówi = "z"
 var skacze = true;
+var loadedAssets = 0;
 //wczytywanie obrazków obrazki (ui)
+var assety = {
+    
+}
+//lista asstetów (ui)
+var AssetsList = [
+    "screen_blue",
+    "screen_green",
+    "screen_pink",
+    "state_image_om",
+    "state_image_on",
+    "state_image_zm",
+    "state_image_zn",
+    "state_select",
+    "ui_button_-1",
+    "ui_button_-10",
+    "ui_button_+1",
+    "ui_button_+10",
+    "ui_button_back",
+    "ui_button_experimental",
+    "ui_button_hide",
+    "ui_button_horizontal",
+    "ui_button_options",
+    "ui_button_vertical",
+    "ui_check_false",
+    "ui_check_true",
+    "ui_icon_bin",
+    "ui_icon_discord",
+    "ui_icon_github",
+    "ui_icon_tiktok",
+    "ui_icon_website",
+    "ui_icon_youtube",
 
+]
+//wczytuje ui
+LoadUI()
+function LoadUI() {
+    start();
+    c.fillStyle = tło.colors[tło.AS];
+    c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    c.font = '48px serif';
+    c.fillText('wczytywanie assetów', 10, 50);
+
+    AssetsList.forEach(asset => {
+        c.fillStyle = tło.colors[tło.AS];
+        c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        c.font = '48px serif';
+        c.fillText('wczytywanie assetów', 10, 50);
+
+        try {
+            var ass = new Image;
+            ass.src = "./ui/"+asset+".png"
+            ass.onload = function () {
+            console.log("wcztano : "+asset)
+            assety[asset] = ass;
+        }
+        }catch{
+            console.log("nie wcztano : "+asset)
+        }
+        
+        
+    })
+    loadedAssets += 1;
+    recalcdata();
+}
 //reszta skryptów
 var RenderData={
     doll:{
@@ -66,18 +130,31 @@ function start(){
     document.getElementById("c").height = window.innerHeight;
 }
 function render(){
+    if (loadedAssets == 1) {
+    try {
     document.getElementById("c").width = window.innerWidth;
     document.getElementById("c").height = window.innerHeight;
-    c.fillStyle = tło.colors[0];
+    c.fillStyle = tło.colors[tło.AS];
     c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
-    //var img = ((new Image).src="")
+    c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);//
+    //var img = ((new Image).src="") 
+    } catch {
+      console.log("render errror")
+    }    
+    } else{
+        c.fillStyle = tło.colors[tło.AS];
+        c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        c.font = '48px serif';
+        c.fillText('wczytywanie assetów', 10, 300);
+    }
+    
+    
 }
 //podstawowe funkcje włączane
 render();
 setTimeout(() => {
     recalcdata();
-}, 100);
+}, 1000);
 
 setInterval(render,16)
 setInterval(skoki,16)
@@ -103,7 +180,7 @@ function skoki(){
         }else {
             y-=sila;
         }
-        console.log("y:"+y+" sile:"+sila)
+        //console.log("y:"+y+" sile:"+sila)
         
     }
 }
@@ -115,7 +192,8 @@ function chceck(){
 }
 //przelicza rozmiar ui
 function recalcdata(){
-    var w=window.innerWidth;
+    try {
+     var w=window.innerWidth;
     var h=window.innerHeight;
     var Iw=ASzn.width;
     var Ih=ASzn.height;
@@ -140,14 +218,17 @@ function recalcdata(){
     }
 
     RenderData.screen.w=window.innerWidth;
-    RenderData.screen.h=window.innerHeight
+    RenderData.screen.h=window.innerHeight   
+    }catch{
+
+    }
+    
 }
 //mruganie
 setInterval(() => {
     mruga="n"
     var som =getRandomInt(0,3)
     if(som==1)mruga = "m"
-    console.log(som);
 }, 1000);
 // mic sprawdzanie (mówienie)
 navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
@@ -172,8 +253,8 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
   
         var average = values / length;
         loudness = Math.round(average)
-        console.log(loudness);
-        if (loudness>15){
+        //console.log(loudness);
+        if (loudness>MocM){
             mówi="o"
         }else{
             mówi="z"
