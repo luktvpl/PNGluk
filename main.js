@@ -1,5 +1,32 @@
 
-var c = document.getElementById("c").getContext("2d");
+var screen = document.getElementById("c");
+var c = screen.getContext("2d");
+var TapLocation = {x:0,y:0}
+var debug = true;
+var micDebug = false;
+var phisicDebuge = false;
+var mc = new FontFace("minecraft",'url("./font/minecraft_pl_font.woff")')
+//dotyk
+screen.addEventListener("mousedown",function(e) {
+    TapLocation = getMousePos(e)
+    tap(TapLocation.x,TapLocation.y);
+},false)
+//zdobywanie pozycji myszki
+function getMousePos(mouseEvent) {
+    return {
+      x: mouseEvent.clientX,
+      y: mouseEvent.clientY
+    };
+}
+
+function clog(loge){
+    if(debug) console.log(loge)
+}
+//wczytywanie czcionki
+mc.load().then(mc => {
+    document.fonts.add(mc)
+    LoadUI();
+})
 var loudness;
 var MocM=70;
 var x=0;
@@ -19,7 +46,43 @@ var skacze = true;
 var loadedAssets = 0;
 //wczytywanie obrazków obrazki (ui)
 var assety = {
-    
+    screen_blue:"",
+    screen_green:"",
+    screen_pink:"",
+    state_image_om:"",
+    state_image_on:"",
+    state_image_zm:"",
+    state_image_zn:"",
+    state_select:"",
+    ui_button_m1:"",
+    ui_button_m10:"",
+    ui_button_p1:"",
+    ui_button_p10:"",
+    ui_button_back:"",
+    ui_button_experimental:"",
+    ui_button_hide:"",
+    ui_button_horizontal:"",
+    ui_button_options:"",
+    ui_button_vertical:"",
+    ui_check_false:"",
+    ui_check_true:"",
+    ui_icon_bin:"",
+    ui_icon_discord:"",
+    ui_icon_github:"",
+    ui_icon_tiktok:"",
+    ui_icon_website:"",
+    ui_icon_youtube:"",
+    ui_move_0:"",
+    ui_move_1:"",
+    ui_text_author:"",
+    ui_text_BackGroundColor:"",
+    ui_text_blink:"",
+    ui_text_help:"",
+    ui_text_luk:"",
+    ui_text_mic:"",
+    ui_text_move:"",
+    ui_title_advance:"",
+    ui_title_author:""
 }
 //lista asstetów (ui)
 var AssetsList = [
@@ -31,10 +94,10 @@ var AssetsList = [
     "state_image_zm",
     "state_image_zn",
     "state_select",
-    "ui_button_-1",
-    "ui_button_-10",
-    "ui_button_+1",
-    "ui_button_+10",
+    "ui_button_m1",
+    "ui_button_m10",
+    "ui_button_p1",
+    "ui_button_p10",
     "ui_button_back",
     "ui_button_experimental",
     "ui_button_hide",
@@ -59,11 +122,46 @@ var AssetsList = [
     "ui_text_mic",
     "ui_text_move",
     "ui_title_advance",
-    "ui_title_author",
+    "ui_title_author"
 
 ]
+//ui data zbyt skomplikowane dla prostych ludzi nie tykać
+
+var UIdata = {
+    main : [],
+    main_and_ui : [],
+    credits :[],
+    options : [],
+}
+var TouchData = {
+    main : [{
+        name:"hide",
+        image:"",
+        x:"",
+        y:"",
+        dx:"",
+        dy:"",
+        fx:"",
+        fy:"",
+        rcx:"",
+        rcy:"",
+        rcdx:"",
+        rcdy:"",
+        funct:""
+    },
+],
+    main_and_ui : [],
+    credits :[],
+    options : [],
+}
+//renderuje klatke 
+function renderFrame(scene){
+    scene.forEach(elementel => {
+
+    })
+}
 //wczytuje ui
-LoadUI()
+
 function LoadUI() {
     start();
     c.fillStyle = tło.colors[tło.AS];
@@ -74,23 +172,26 @@ function LoadUI() {
     AssetsList.forEach(asset => {
         c.fillStyle = tło.colors[tło.AS];
         c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        c.font = '48px serif';
+        c.font = '48px minecraft';
         c.fillText('wczytywanie assetów', 10, 50);
         LoadingState.main = "wczytywanie assetów"
         try {
             var ass = new Image;
             ass.src = "./ui/"+asset+".png"
             ass.onload = function () {
-            console.log("wcztano : "+asset)
+            clog("wcztano : "+asset)
             LoadingState.details = "wcztano : "+asset;
             assety[asset] = ass;
         }
         }catch{
-            console.log("nie wcztano : "+asset)
+            clog("nie wcztano : "+asset)
         }
+        setTimeout(() => {
            if (asset == AssetsList[AssetsList.length*1-1]){
                 screen = "main";
-            }
+            } 
+        }, 100);
+           
         
         
         
@@ -153,22 +254,29 @@ function start(){
 }
 function render(){
     try {
+        //c.drawImage(tło.sksjl,0,0,0,0)
     switch (screen) {
+        
         case "main":
-            document.getElementById("c").width = window.innerWidth;
-            document.getElementById("c").height = window.innerHeight;
+            
             c.fillStyle = tło.colors[tło.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);//
 
             break;
+        case "main_and_ui":
+            c.fillStyle = tło.colors[tło.AS];
+            c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
+            renderFrame(UIdata.main_and_ui);
+            break;
         case "loading":
             c.fillStyle = tło.colors[tło.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight)
             c.fillStyle = 'black';
-            c.font = '10px minecraft_pl_font';
-            c.fillText(LoadingState.main,0,12)
-            c.fillText(LoadingState.details,0,24)
+            c.font = '40px minecraft';
+            c.fillText(LoadingState.main,0,25)
+            c.fillText(LoadingState.details,0,50)
             break
         default:
 
@@ -176,21 +284,35 @@ function render(){
     }
     
     } catch {
-      console.log("render errror")
+      clog("Render Error")
+      c.fillStyle = 'blue';
+      c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+      c.fillStyle = 'black';
+      c.font = '40px minecraft';
+      c.fillText("Render Error",4,25)
     } 
         /*c.font = '48px serif';
         c.fillText('wczytywanie assetów', 10, 300);*/
     
     
 }
+//tap (funkcja)
+function tap(x,y){
+    clog(x+"+"+y);
+    
+   }
 //podstawowe funkcje włączane
 render();
 setTimeout(() => {
     recalcdata();
 }, 1000);
-
-setInterval(render,16)
-setInterval(skoki,16)
+function tick(){
+    document.getElementById("c").width = window.innerWidth;
+    document.getElementById("c").height = window.innerHeight;
+    render();
+    skoki();
+}
+setInterval(tick,16)
 setInterval(chceck,100)
 //podkoni (fizyka)
 var sila=0;
@@ -213,7 +335,7 @@ function skoki(){
         }else {
             y-=sila;
         }
-        //console.log("y:"+y+" sile:"+sila)
+        if(phisicDebuge)clog("y:"+y+" sile:"+sila)
         
     }
 }
@@ -286,7 +408,7 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
   
         var average = values / length;
         loudness = Math.round(average)
-        //console.log(loudness);
+        if(micDebug)clog(loudness);
         if (loudness>MocM){
             mówi="o"
         }else{
@@ -303,3 +425,6 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   }
+//przykłady użycia funkcji
+//btoa() string to base64
+//atob() base64 to string
