@@ -1,8 +1,14 @@
+
 var c = document.getElementById("c").getContext("2d");
 var loudness;
 var MocM=70;
 var x=0;
 var y=0;
+var LoadingState = {
+    main:"",
+    details:""
+}
+var screen = "loading"
 var tło ={
     AS:0,
     colors:['#ff00ff','#0033cc','#00ff00'],
@@ -43,6 +49,17 @@ var AssetsList = [
     "ui_icon_tiktok",
     "ui_icon_website",
     "ui_icon_youtube",
+    "ui_move_0",
+    "ui_move_1",
+    "ui_text_author",
+    "ui_text_BackGroundColor",
+    "ui_text_blink",
+    "ui_text_help",
+    "ui_text_luk",
+    "ui_text_mic",
+    "ui_text_move",
+    "ui_title_advance",
+    "ui_title_author",
 
 ]
 //wczytuje ui
@@ -59,17 +76,22 @@ function LoadUI() {
         c.fillRect(0, 0, window.innerWidth, window.innerHeight);
         c.font = '48px serif';
         c.fillText('wczytywanie assetów', 10, 50);
-
+        LoadingState.main = "wczytywanie assetów"
         try {
             var ass = new Image;
             ass.src = "./ui/"+asset+".png"
             ass.onload = function () {
             console.log("wcztano : "+asset)
+            LoadingState.details = "wcztano : "+asset;
             assety[asset] = ass;
         }
         }catch{
             console.log("nie wcztano : "+asset)
         }
+           if (asset == AssetsList[AssetsList.length*1-1]){
+                screen = "main";
+            }
+        
         
         
     })
@@ -130,23 +152,34 @@ function start(){
     document.getElementById("c").height = window.innerHeight;
 }
 function render(){
-    if (loadedAssets == 1) {
     try {
-    document.getElementById("c").width = window.innerWidth;
-    document.getElementById("c").height = window.innerHeight;
-    c.fillStyle = tło.colors[tło.AS];
-    c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);//
-    //var img = ((new Image).src="") 
+    switch (screen) {
+        case "main":
+            document.getElementById("c").width = window.innerWidth;
+            document.getElementById("c").height = window.innerHeight;
+            c.fillStyle = tło.colors[tło.AS];
+            c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);//
+
+            break;
+        case "loading":
+            c.fillStyle = tło.colors[tło.AS];
+            c.fillRect(0, 0, window.innerWidth, window.innerHeight)
+            c.fillStyle = 'black';
+            c.font = '10px minecraft_pl_font';
+            c.fillText(LoadingState.main,0,12)
+            c.fillText(LoadingState.details,0,24)
+            break
+        default:
+
+            break;
+    }
+    
     } catch {
       console.log("render errror")
-    }    
-    } else{
-        c.fillStyle = tło.colors[tło.AS];
-        c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        c.font = '48px serif';
-        c.fillText('wczytywanie assetów', 10, 300);
-    }
+    } 
+        /*c.font = '48px serif';
+        c.fillText('wczytywanie assetów', 10, 300);*/
     
     
 }
