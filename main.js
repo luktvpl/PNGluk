@@ -6,6 +6,7 @@ var debug = true;
 var micDebug = false;
 var phisicDebuge = false;
 var mc = new FontFace("minecraft",'url("./font/minecraft_pl_font.woff")')
+var HtmlIN = document.getElementById("other")
 //dotyk
 screen.addEventListener("mousedown",function(e) {
     TapLocation = getMousePos(e)
@@ -28,7 +29,7 @@ mc.load().then(mc => {
     LoadUI();
 })
 var loudness;
-var MocM=70;
+var MocM=25;
 var x=0;
 var y=0;
 var LoadingState = {
@@ -82,7 +83,8 @@ var assety = {
     ui_text_mic:"",
     ui_text_move:"",
     ui_title_advance:"",
-    ui_title_author:""
+    ui_title_author:"",
+    invisible:""
 }
 //lista asstetów (ui)
 var AssetsList = [
@@ -122,44 +124,11 @@ var AssetsList = [
     "ui_text_mic",
     "ui_text_move",
     "ui_title_advance",
-    "ui_title_author"
+    "ui_title_author",
+    "invisible"
 
 ]
-//ui data zbyt skomplikowane dla prostych ludzi nie tykać
 
-var UIdata = {
-    main : [],
-    main_and_ui : [],
-    credits :[],
-    options : [],
-}
-var TouchData = {
-    main : [{
-        name:"hide",
-        image:"",
-        x:"",
-        y:"",
-        dx:"",
-        dy:"",
-        fx:"",
-        fy:"",
-        rcx:"",
-        rcy:"",
-        rcdx:"",
-        rcdy:"",
-        funct:""
-    },
-],
-    main_and_ui : [],
-    credits :[],
-    options : [],
-}
-//renderuje klatke 
-function renderFrame(scene){
-    scene.forEach(elementel => {
-
-    })
-}
 //wczytuje ui
 
 function LoadUI() {
@@ -188,7 +157,8 @@ function LoadUI() {
         }
         setTimeout(() => {
            if (asset == AssetsList[AssetsList.length*1-1]){
-                screen = "main";
+                screen = "main_and_ui";
+                recalcdata()
             } 
         }, 100);
            
@@ -252,6 +222,18 @@ function start(){
     document.getElementById("c").width = window.innerWidth;
     document.getElementById("c").height = window.innerHeight;
 }
+//ui data zbyt skomplikowane dla prostych ludzi nie tykać
+
+var TouchData = {
+    main : [],
+    main_and_ui : [],
+    credits :[],
+    options : [],
+    InfoMessage : [],
+    ErrorMesseger : [],
+
+}
+//renderowanie
 function render(){
     try {
         //c.drawImage(tło.sksjl,0,0,0,0)
@@ -268,7 +250,19 @@ function render(){
             c.fillStyle = tło.colors[tło.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
-            renderFrame(UIdata.main_and_ui);
+            //reszta ui
+            c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y,RenderData.state_select.dx,RenderData.state_select.dy)
+            c.drawImage(assety.ui_button_experimental,RenderData.ui_button_experimental.x,RenderData.ui_button_experimental.y,RenderData.ui_button_experimental.dx,RenderData.ui_button_experimental.dy)
+            c.drawImage(assety.ui_button_hide,RenderData.ui_button_hide.x,RenderData.ui_button_hide.y,RenderData.ui_button_hide.dx,RenderData.ui_button_hide.dy)
+            c.drawImage(assety.ui_button_options,RenderData.ui_button_options.x,RenderData.ui_button_options.y,RenderData.ui_button_options.dx,RenderData.ui_button_options.dy)
+            /*c.font = RenderData.text+'px minecraft';
+            c.fillText("hej",0,50)*/
+            break;
+        case "options":
+            c.fillStyle = tło.colors[tło.AS];
+            c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            c.drawImage(assety.ui_button_back,RenderData.ui_button_back.x,RenderData.ui_button_back.y,RenderData.ui_button_back.dx,RenderData.ui_button_back.dy)
+            c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y,RenderData.state_select.dx,RenderData.state_select.dy)
             break;
         case "loading":
             c.fillStyle = tło.colors[tło.AS];
@@ -278,13 +272,21 @@ function render(){
             c.fillText(LoadingState.main,0,25)
             c.fillText(LoadingState.details,0,50)
             break
+        case "experimental" :
+            c.fillStyle = tło.colors[tło.AS];
+            c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            c.drawImage(assety.ui_button_back,RenderData.ui_button_back.x,RenderData.ui_button_back.y,RenderData.ui_button_back.dx,RenderData.ui_button_back.dy)
+        break
         default:
-
+            clog("Render Error")
+            c.fillStyle = 'blue';
+            c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            c.fillStyle = 'black';
+            c.font = '40px minecraft';
+            c.fillText("Render Error",4,25)
             break;
-    }
-    
+    }    
     } catch {
-      clog("Render Error")
       c.fillStyle = 'blue';
       c.fillRect(0, 0, window.innerWidth, window.innerHeight);
       c.fillStyle = 'black';
@@ -296,19 +298,146 @@ function render(){
     
     
 }
+//przelicza rozmiar ui
+function recalcdata(){
+    try {
+     var w=window.innerWidth;
+    var h=window.innerHeight;
+    var Iw=ASzn.width;
+    var Ih=ASzn.height;
+    if(w>h){
+        var hh = h-100;
+        var size = h/Ih;
+      RenderData.doll={
+        x:w/2-Iw*size/2,
+        y:50,
+        dx:Iw*size-50,
+        dy:Ih*size-50,
+    }
+    } else {
+        var hw = w-100;
+        var size = w/Iw;
+      RenderData.doll={
+        x:50,
+        y:h/2-Ih*size/2,
+        dx:Iw*size-50,
+        dy:Ih*size-50,
+    }
+    }
+    //inne assety
+    //(state select)
+    var monożnik= window.innerWidth/assety.state_select.width
+    RenderData.state_select = {
+        x:0,
+        y:window.innerHeight-monożnik*assety.state_select.height,
+        dx:window.innerWidth,
+        dy:monożnik*assety.state_select.height,
+    }
+    //experimantal+hide+options button
+    monożnik = window.innerWidth/assety.ui_button_experimental.width/3;
+    RenderData.ui_button_experimental ={
+        x:assety.ui_button_experimental.width*monożnik*2,
+        y:0,
+        dx:assety.ui_button_experimental.width*monożnik,
+        dy:assety.ui_button_experimental.height*monożnik,
+        fixx:assety.ui_button_experimental.width*monożnik*2+assety.ui_button_experimental.width*monożnik,
+        fixy:assety.ui_button_experimental.height*monożnik,
+        funct : "experimental"
+    }
+    RenderData.ui_button_hide ={
+        x:assety.ui_button_experimental.width*monożnik*1,
+        y:0,
+        dx:assety.ui_button_experimental.width*monożnik,
+        dy:assety.ui_button_experimental.height*monożnik,
+        fixx:assety.ui_button_experimental.width*monożnik*1+assety.ui_button_experimental.width*monożnik,
+        fixy:assety.ui_button_experimental.height*monożnik,
+        funct : "hide"
+    }
+    RenderData.ui_button_options ={
+        x:assety.ui_button_experimental.width*monożnik*0,
+        y:0,
+        dx:assety.ui_button_experimental.width*monożnik,
+        dy:assety.ui_button_experimental.height*monożnik,
+        fixx:assety.ui_button_experimental.width*monożnik*0+assety.ui_button_experimental.width*monożnik,
+        fixy:assety.ui_button_experimental.height*monożnik,
+        funct : "options"
+    }
+    //back button
+    RenderData.ui_button_back ={
+        x:assety.ui_button_experimental.width*monożnik*0,
+        y:0,
+        dx:assety.ui_button_experimental.width*monożnik,
+        dy:assety.ui_button_experimental.height*monożnik,
+        fixx:assety.ui_button_experimental.width*monożnik*0+assety.ui_button_experimental.width*monożnik,
+        fixy:assety.ui_button_experimental.height*monożnik,
+        funct : "back"
+    }
+    //text resize
+    RenderData["text"] = Math.round(window.innerHeight/100*10)
+    console.log(RenderData.text)
+    console.log(monożnik)
+    
+    //inne
+    RenderData.screen.w=window.innerWidth;
+    RenderData.screen.h=window.innerHeight   
+    }catch{
+
+    }
+    
+}
 //tap (funkcja)
 function tap(x,y){
+    
     clog(x+"+"+y);
+    switch (screen) {
+        case "main":
+            checktouch(RenderData.ui_button_hide,x,y);
+        break;
+        case "main_and_ui" :
+            checktouch(RenderData.ui_button_hide,x,y);
+            checktouch(RenderData.ui_button_experimental,x,y);
+            checktouch(RenderData.ui_button_options,x,y);
+        break;
+        case "options" :
+            checktouch(RenderData.ui_button_back,x,y);
+
+        break;
+        case "experimental":
+            checktouch(RenderData.ui_button_back,x,y);
+        break
+        default:
+
+        break
+    }
     
    }
+//funkcje guzikó
+function checktouch(guziki,x,y) {
+    if(guziki.x<=x&&guziki.fixx>=x&&guziki.y<=y&&guziki.fixy>=y) funkcjiie(guziki.funct)
+}
+function funkcjiie(funct) {
+    switch (funct) {
+        case "hide":
+            if(screen=="main") screen="main_and_ui";else screen = "main"
+        break
+        case "options" :
+            screen="options"
+        break
+        case "experimental" :
+            screen="experimental"
+        break
+        case "back":
+            screen="main_and_ui"
+            document.getElementById("other").innerHTML = "";
+        break
+    }
+}
 //podstawowe funkcje włączane
 render();
 setTimeout(() => {
     recalcdata();
 }, 1000);
 function tick(){
-    document.getElementById("c").width = window.innerWidth;
-    document.getElementById("c").height = window.innerHeight;
     render();
     skoki();
 }
@@ -343,42 +472,17 @@ function skoki(){
 function chceck(){
  if(window.innerHeight!=RenderData.screen.h||window.innerWidth!=RenderData.screen.w){
      recalcdata();
+     
+    document.getElementById("c").width = window.innerWidth;
+    document.getElementById("c").height = window.innerHeight;
  }
 }
-//przelicza rozmiar ui
-function recalcdata(){
-    try {
-     var w=window.innerWidth;
-    var h=window.innerHeight;
-    var Iw=ASzn.width;
-    var Ih=ASzn.height;
-    if(w>h){
-        var hh = h-100;
-        var size = h/Ih;
-      RenderData.doll={
-        x:w/2-Iw*size/2,
-        y:50,
-        dx:Iw*size-50,
-        dy:Ih*size-50,
-    }
-    } else {
-        var hw = w-100;
-        var size = w/Iw;
-      RenderData.doll={
-        x:50,
-        y:h/2-Ih*size/2,
-        dx:Iw*size-50,
-        dy:Ih*size-50,
-    }
-    }
-
-    RenderData.screen.w=window.innerWidth;
-    RenderData.screen.h=window.innerHeight   
-    }catch{
-
-    }
+//tets()
+function tets(){
+    HtmlIN.innerHTML = ImageInputGenerate("./ui/state_image_zn.png",500,500,"recalcdata")
     
 }
+
 //mruganie
 setInterval(() => {
     mruga="n"
@@ -424,6 +528,11 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
+  }
+  //image input generator
+  function ImageInputGenerate(imageLocation,x,y,dx,dy,FunctionName){
+      var output = '<label for="file-input"><img src="'+imageLocation+'" style="position: fixed; width: '+dx+'px;height: '+dy+'px; z-index: 2; top: '+y+'px; left: '+x+'px"/></label><input id="file-input" onchange="'+FunctionName+'()" type="file" style="visibility: hidden"/>'
+      return output
   }
 //przykłady użycia funkcji
 //btoa() string to base64
