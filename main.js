@@ -1,12 +1,29 @@
 
 var screen = document.getElementById("c");
 var c = screen.getContext("2d");
+try{
+function openFullscreen() {
+    recalcdata()
+    var canvas = document.getElementById("html");
+    if(canvas.requestFullScreen)
+        canvas.requestFullScreen();
+    else if(canvas.webkitRequestFullScreen)
+        canvas.webkitRequestFullScreen();
+    else if(canvas.mozRequestFullScreen)
+        canvas.mozRequestFullScreen();
+    
+  }
+}catch{
+
+}
+
 var TapLocation = {x:0,y:0}
 var debug = true;
 var micDebug = false;
 var phisicDebuge = false;
 var mc = new FontFace("minecraft",'url("./font/minecraft_pl_font.woff")')
 var HtmlIN = document.getElementById("other")
+var textScalation = 57/28;
 //dotyk
 screen.addEventListener("mousedown",function(e) {
     TapLocation = getMousePos(e)
@@ -28,7 +45,7 @@ mc.load().then(mc => {
     document.fonts.add(mc)
     LoadUI();
 })
-var loudness;
+var loudness=0;
 var MocM=25;
 var x=0;
 var y=0;
@@ -40,6 +57,7 @@ var screen = "loading"
 var tło ={
     AS:0,
     colors:['#ff00ff','#0033cc','#00ff00'],
+    names:["pink","blue","green"]
 }
 var mruga = "n";
 var mówi = "z"
@@ -157,7 +175,7 @@ function LoadUI() {
         }
         setTimeout(() => {
            if (asset == AssetsList[AssetsList.length*1-1]){
-                screen = "main_and_ui";
+                screen = "options";
                 recalcdata()
             } 
         }, 100);
@@ -233,10 +251,12 @@ var TouchData = {
     ErrorMesseger : [],
 
 }
+RenderData.text = 40;
 //renderowanie
 function render(){
     try {
         //c.drawImage(tło.sksjl,0,0,0,0)
+        c.font = RenderData.text+'px minecraft';
     switch (screen) {
         
         case "main":
@@ -255,20 +275,29 @@ function render(){
             c.drawImage(assety.ui_button_experimental,RenderData.ui_button_experimental.x,RenderData.ui_button_experimental.y,RenderData.ui_button_experimental.dx,RenderData.ui_button_experimental.dy)
             c.drawImage(assety.ui_button_hide,RenderData.ui_button_hide.x,RenderData.ui_button_hide.y,RenderData.ui_button_hide.dx,RenderData.ui_button_hide.dy)
             c.drawImage(assety.ui_button_options,RenderData.ui_button_options.x,RenderData.ui_button_options.y,RenderData.ui_button_options.dx,RenderData.ui_button_options.dy)
-            /*c.font = RenderData.text+'px minecraft';
+            /*
             c.fillText("hej",0,50)*/
             break;
         case "options":
             c.fillStyle = tło.colors[tło.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.drawImage(assety.ui_button_back,RenderData.ui_button_back.x,RenderData.ui_button_back.y,RenderData.ui_button_back.dx,RenderData.ui_button_back.dy)
-            c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y,RenderData.state_select.dx,RenderData.state_select.dy)
+            c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y-RenderData.state_select.dy,RenderData.state_select.dx,RenderData.state_select.dy)
+            c.drawImage(assety["screen_"+tło.names[tło.AS]],RenderData.screen_blue.x,RenderData.screen_blue.y,RenderData.screen_blue.dx,RenderData.screen_blue.dy)
+            c.drawImage(assety.ui_button_p10,RenderData.ui_button_p10.x,RenderData.ui_button_p10.y,RenderData.ui_button_p10.dx,RenderData.ui_button_p10.dy)
+            c.drawImage(assety.ui_button_p1,RenderData.ui_button_p1.x,RenderData.ui_button_p1.y,RenderData.ui_button_p1.dx,RenderData.ui_button_p1.dy)
+            c.drawImage(assety.ui_button_m10,RenderData.ui_button_m10.x,RenderData.ui_button_m10.y,RenderData.ui_button_m10.dx,RenderData.ui_button_m10.dy)
+            c.drawImage(assety.ui_button_m1,RenderData.ui_button_m1.x,RenderData.ui_button_m1.y,RenderData.ui_button_m1.dx,RenderData.ui_button_m1.dy)
+            c.fillStyle = 'black';
+            c.fillText("hej",window.innerWidth/5*4,window.innerHeight/5*4)
+            c.fillText("kolor tła",RenderData.textData.background.x,RenderData.textData.background.y)
+            c.fillText(MocM,RenderData.textData.micforce.x,RenderData.textData.micforce.y)
+            c.fillText(loudness,RenderData.textData.micstate.x,RenderData.textData.micstate.y)
             break;
         case "loading":
             c.fillStyle = tło.colors[tło.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight)
             c.fillStyle = 'black';
-            c.font = '40px minecraft';
             c.fillText(LoadingState.main,0,25)
             c.fillText(LoadingState.details,0,50)
             break
@@ -282,7 +311,6 @@ function render(){
             c.fillStyle = 'blue';
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.fillStyle = 'black';
-            c.font = '40px minecraft';
             c.fillText("Render Error",4,25)
             break;
     }    
@@ -290,7 +318,6 @@ function render(){
       c.fillStyle = 'blue';
       c.fillRect(0, 0, window.innerWidth, window.innerHeight);
       c.fillStyle = 'black';
-      c.font = '40px minecraft';
       c.fillText("Render Error",4,25)
     } 
         /*c.font = '48px serif';
@@ -372,16 +399,83 @@ function recalcdata(){
         fixy:assety.ui_button_experimental.height*monożnik,
         funct : "back"
     }
+    //options ui
+    var ycorrector = assety.ui_button_experimental.height*monożnik
+    var screencorrector = window.innerHeight-Math.round(ycorrector)
+    var locatormove = screencorrector/15
+    RenderData.screen_blue = {
+        x:0,
+        y:ycorrector+locatormove*0,
+        dx:monożnik*assety.screen_blue.width,
+        dy:monożnik*assety.screen_blue.height,
+        fixx:monożnik*assety.screen_blue.width-3,
+        fixy:monożnik*assety.screen_blue.height+ycorrector+locatormove*0-3,
+        funct : "nbg"
+    }
+    RenderData["textData"] = {
+
+    }
+    RenderData.textData["background"] = {
+        x:RenderData.screen_blue.fixx+10,
+        y:RenderData.screen_blue.fixy+RenderData.text-RenderData.text*1
+    }
+    //(mic)
+    
+    RenderData["ui_button_p10"] = {
+        x:monożnik*assety.ui_button_p10.width/2*0,
+        y:ycorrector+locatormove*1,
+        dx:monożnik*assety.ui_button_p10.width/2,
+        dy:monożnik*assety.ui_button_p10.height/2,
+        fixx:monożnik*assety.ui_button_p10.width/2,
+        fixy:monożnik*assety.ui_button_p10.height/2+ycorrector+locatormove*1,
+        funct : "nbg"
+    }
+    RenderData["ui_button_p1"] = {
+        x:monożnik*assety.ui_button_p10.width/2*1,
+        y:ycorrector+locatormove*1,
+        dx:monożnik*assety.ui_button_p10.width/2,
+        dy:monożnik*assety.ui_button_p10.height/2,
+        fixx:monożnik*assety.ui_button_p10.width/2*2,
+        fixy:monożnik*assety.ui_button_p10.height/2+ycorrector+locatormove*1,
+        funct : "nbg"
+    }
+    RenderData.textData["micforce"] = {
+        x:monożnik*assety.ui_button_p10.width/2*2,
+        y:ycorrector+locatormove*2
+    }
+    RenderData["ui_button_m10"] = {
+        x:monożnik*assety.ui_button_p10.width/2*3,
+        y:ycorrector+locatormove*1,
+        dx:monożnik*assety.ui_button_p10.width/2,
+        dy:monożnik*assety.ui_button_p10.height/2,
+        fixx:monożnik*assety.ui_button_p10.width/2*4,
+        fixy:monożnik*assety.ui_button_p10.height/2+ycorrector+locatormove*1,
+        funct : "nbg"
+    }
+    RenderData["ui_button_m1"] = {
+        x:monożnik*assety.ui_button_p10.width/2*4,
+        y:ycorrector+locatormove*1,
+        dx:monożnik*assety.ui_button_p10.width/2,
+        dy:monożnik*assety.ui_button_p10.height/2,
+        fixx:monożnik*assety.ui_button_p10.width/2*5,
+        fixy:monożnik*assety.ui_button_p10.height/2+ycorrector+locatormove,
+        funct : "nbg"
+    }
+    RenderData.textData["micstate"] = {
+        x:monożnik*assety.ui_button_p10.width/2*5,
+        y:ycorrector+locatormove*2
+    }
+    clog(RenderData.ui_button_p10)
     //text resize
-    RenderData["text"] = Math.round(window.innerHeight/100*10)
-    console.log(RenderData.text)
-    console.log(monożnik)
+    RenderData["text"] = Math.round(textScalation*window.innerHeight/40)
+    clog(RenderData.text+"textmnożnik")
+    clog(monożnik)
+    clog("cs"+screencorrector);
     
     //inne
     RenderData.screen.w=window.innerWidth;
     RenderData.screen.h=window.innerHeight   
     }catch{
-
     }
     
 }
@@ -400,6 +494,7 @@ function tap(x,y){
         break;
         case "options" :
             checktouch(RenderData.ui_button_back,x,y);
+            checktouch(RenderData.screen_blue,x,y)
 
         break;
         case "experimental":
@@ -429,6 +524,21 @@ function funkcjiie(funct) {
         case "back":
             screen="main_and_ui"
             document.getElementById("other").innerHTML = "";
+        break
+        case "nbg":
+            switch (tło.AS) {
+                case 0:
+                    tło.AS=1
+                break;
+                case 1:
+                    tło.AS=2
+                break;
+                case 2:
+                    tło.AS=0
+                break;
+            }
+            clog(tło.AS)
+            clog("ok")
         break
     }
 }
@@ -490,6 +600,9 @@ setInterval(() => {
     if(som==1)mruga = "m"
 }, 1000);
 // mic sprawdzanie (mówienie)
+function test(){
+
+}
 navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     audioContext = new AudioContext();
     analyser = audioContext.createAnalyser();
@@ -522,6 +635,7 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     })
     .catch(function(err) {
       /* handle the error */
+      console.log(err)
   });
   //funkcjie pomocnicze
   function getRandomInt(min, max) {
