@@ -16,7 +16,36 @@ function openFullscreen() {
 }catch{
 
 }
-
+var save ={}
+function checksave(){
+    /*
+    Client ID:
+    8ee40875c9424ed
+    Client secret:
+    dbc12cfd458c169d2ddc56e31554a944704fd151
+    */ 
+}
+function saveSave(cvalue) {
+    const d = new Date();
+    d.setTime(d.getTime() + (360*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = "save" + "=" + JSON.stringify(cvalue) + ";" + expires + ";path=/";
+  }
+  function loadSave() {
+    let name = "save" + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
 var TapLocation = {x:0,y:0}
 var debug = true;
 var micDebug = false;
@@ -24,6 +53,7 @@ var phisicDebuge = false;
 var mc = new FontFace("minecraft",'url("./font/minecraft_pl_font.woff")')
 var HtmlIN = document.getElementById("other")
 var textScalation = 57/28;
+var save = 
 //dotyk
 screen.addEventListener("mousedown",function(e) {
     TapLocation = getMousePos(e)
@@ -64,6 +94,9 @@ var mówi = "z"
 var skacze = true;
 var loadedAssets = 0;
 //wczytywanie obrazków obrazki (ui)
+var statesAssety = {
+
+}
 var assety = {
     screen_blue:"",
     screen_green:"",
@@ -289,10 +322,9 @@ function render(){
             c.drawImage(assety.ui_button_m10,RenderData.ui_button_m10.x,RenderData.ui_button_m10.y,RenderData.ui_button_m10.dx,RenderData.ui_button_m10.dy)
             c.drawImage(assety.ui_button_m1,RenderData.ui_button_m1.x,RenderData.ui_button_m1.y,RenderData.ui_button_m1.dx,RenderData.ui_button_m1.dy)
             c.fillStyle = 'black';
-            c.fillText("hej",window.innerWidth/5*4,window.innerHeight/5*4)
             c.fillText("kolor tła",RenderData.textData.background.x,RenderData.textData.background.y)
             c.fillText(MocM,RenderData.textData.micforce.x,RenderData.textData.micforce.y)
-            c.fillText(loudness,RenderData.textData.micstate.x,RenderData.textData.micstate.y)
+            c.fillText(loudness+" : moc mikrofonu",RenderData.textData.micstate.x,RenderData.textData.micstate.y)
             break;
         case "loading":
             c.fillStyle = tło.colors[tło.AS];
@@ -406,10 +438,10 @@ function recalcdata(){
     RenderData.screen_blue = {
         x:0,
         y:ycorrector+locatormove*0,
-        dx:monożnik*assety.screen_blue.width,
-        dy:monożnik*assety.screen_blue.height,
-        fixx:monożnik*assety.screen_blue.width-3,
-        fixy:monożnik*assety.screen_blue.height+ycorrector+locatormove*0-3,
+        dx:monożnik*assety.screen_blue.width/2,
+        dy:monożnik*assety.screen_blue.height/2,
+        fixx:monożnik*assety.screen_blue.width/2-3,
+        fixy:monożnik*assety.screen_blue.height/2+ycorrector+locatormove*0-3,
         funct : "nbg"
     }
     RenderData["textData"] = {
@@ -417,7 +449,7 @@ function recalcdata(){
     }
     RenderData.textData["background"] = {
         x:RenderData.screen_blue.fixx+10,
-        y:RenderData.screen_blue.fixy+RenderData.text-RenderData.text*1
+        y:RenderData.screen_blue.fixy
     }
     //(mic)
     
@@ -428,7 +460,7 @@ function recalcdata(){
         dy:monożnik*assety.ui_button_p10.height/2,
         fixx:monożnik*assety.ui_button_p10.width/2,
         fixy:monożnik*assety.ui_button_p10.height/2+ycorrector+locatormove*1,
-        funct : "nbg"
+        funct : "p10"
     }
     RenderData["ui_button_p1"] = {
         x:monożnik*assety.ui_button_p10.width/2*1,
@@ -437,7 +469,7 @@ function recalcdata(){
         dy:monożnik*assety.ui_button_p10.height/2,
         fixx:monożnik*assety.ui_button_p10.width/2*2,
         fixy:monożnik*assety.ui_button_p10.height/2+ycorrector+locatormove*1,
-        funct : "nbg"
+        funct : "p1"
     }
     RenderData.textData["micforce"] = {
         x:monożnik*assety.ui_button_p10.width/2*2,
@@ -450,7 +482,7 @@ function recalcdata(){
         dy:monożnik*assety.ui_button_p10.height/2,
         fixx:monożnik*assety.ui_button_p10.width/2*4,
         fixy:monożnik*assety.ui_button_p10.height/2+ycorrector+locatormove*1,
-        funct : "nbg"
+        funct : "m10"
     }
     RenderData["ui_button_m1"] = {
         x:monożnik*assety.ui_button_p10.width/2*4,
@@ -459,7 +491,7 @@ function recalcdata(){
         dy:monożnik*assety.ui_button_p10.height/2,
         fixx:monożnik*assety.ui_button_p10.width/2*5,
         fixy:monożnik*assety.ui_button_p10.height/2+ycorrector+locatormove,
-        funct : "nbg"
+        funct : "m1"
     }
     RenderData.textData["micstate"] = {
         x:monożnik*assety.ui_button_p10.width/2*5,
@@ -467,7 +499,7 @@ function recalcdata(){
     }
     clog(RenderData.ui_button_p10)
     //text resize
-    RenderData["text"] = Math.round(textScalation*window.innerHeight/40)
+    RenderData["text"] = Math.round(textScalation*window.innerHeight/25)
     clog(RenderData.text+"textmnożnik")
     clog(monożnik)
     clog("cs"+screencorrector);
@@ -495,11 +527,16 @@ function tap(x,y){
         case "options" :
             checktouch(RenderData.ui_button_back,x,y);
             checktouch(RenderData.screen_blue,x,y)
+            checktouch(RenderData.ui_button_p10,x,y)
+            checktouch(RenderData.ui_button_p1,x,y)
+            checktouch(RenderData.ui_button_m10,x,y)
+            checktouch(RenderData.ui_button_m1,x,y)
 
         break;
         case "experimental":
             checktouch(RenderData.ui_button_back,x,y);
         break
+        
         default:
 
         break
@@ -539,6 +576,18 @@ function funkcjiie(funct) {
             }
             clog(tło.AS)
             clog("ok")
+        break
+        case "p10":
+            MocM +=10
+        break
+        case "p1":
+            MocM +=1
+        break
+        case "m10":
+            MocM -=10
+        break
+        case "m1":
+            MocM -=1
         break
     }
 }
