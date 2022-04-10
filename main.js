@@ -1,6 +1,10 @@
 
 var screen = document.getElementById("c");
 var c = screen.getContext("2d");
+var stopss = false;
+function stop(){
+    stopss = true;
+}
 try{
 function openFullscreen() {
     recalcdata()
@@ -18,12 +22,7 @@ function openFullscreen() {
 }
 var save ={}
 function checksave(){
-    /*
-    Client ID:
-    8ee40875c9424ed
-    Client secret:
-    dbc12cfd458c169d2ddc56e31554a944704fd151
-    */ 
+    
 }
 function saveSave(cvalue) {
     const d = new Date();
@@ -649,10 +648,50 @@ setInterval(() => {
     if(som==1)mruga = "m"
 }, 1000);
 // mic sprawdzanie (mówienie)
-function test(){
-
+function startrec() {
+    rec = true;
 }
+    
+
+var rec = false;
 navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    //start rec
+    function checkrec(){
+        
+        if(rec){
+        rec=false
+        clog("ok")
+        var canvas = document.getElementById("c");
+        var canvasStream = canvas.captureStream();
+        var finalStream = new MediaStream();
+        getTracks(stream, "audio").forEach(function (track) {
+            finalStream.addTrack(track);
+        });
+        getTracks(canvasStream, "video").forEach(function (track) {
+            finalStream.addTrack(track);
+        });
+
+        var recorder = RecordRTC(finalStream, {
+            type: "video",
+        });
+        recorder.startRecording();
+        (function looper() {
+            if (stopss) {
+              recorder.stopRecording(function () {
+                var blob = recorder.getBlob();
+                invokeSaveAsDialog(blob, "plik.webm");
+                rec = false
+                stream.stop();
+                canvasStream.stop();
+              });
+              return;
+            }
+            setTimeout(looper, 100);
+          })();
+        }
+    }
+    setInterval(checkrec,100)
+    //głośność mikrofonu
     audioContext = new AudioContext();
     analyser = audioContext.createAnalyser();
     microphone = audioContext.createMediaStreamSource(stream);
@@ -666,7 +705,7 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
         var array = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(array);
         var values = 0;
-  
+        
         var length = array.length;
         for (var i = 0; i < length; i++) {
           values += (array[i]);
@@ -686,6 +725,8 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
       /* handle the error */
       console.log(err)
   });
+  //rec
+  
   //funkcjie pomocnicze
   function getRandomInt(min, max) {
     min = Math.ceil(min);
