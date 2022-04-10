@@ -1,5 +1,6 @@
 
 var screen = document.getElementById("c");
+var diveł = document.getElementById("diveł");
 var c = screen.getContext("2d");
 var stopss = false;
 function stop(){
@@ -20,7 +21,9 @@ function openFullscreen() {
 }catch{
 
 }
-var save ={}
+var save ={
+    
+}
 function checksave(){
     
 }
@@ -531,6 +534,7 @@ function tap(x,y){
             checktouch(RenderData.ui_button_m10,x,y)
             checktouch(RenderData.ui_button_m1,x,y)
 
+
         break;
         case "experimental":
             checktouch(RenderData.ui_button_back,x,y);
@@ -553,6 +557,7 @@ function funkcjiie(funct) {
         break
         case "options" :
             screen="options"
+            diveł.innerHTML = imgimp;
         break
         case "experimental" :
             screen="experimental"
@@ -729,10 +734,9 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     return Math.floor(Math.random() * (max - min)) + min;
   }
   //image input generator
-  function ImageInputGenerate(imageLocation,x,y,dx,dy,FunctionName){
-      var output = '<label for="file-input"><img src="'+imageLocation+'" style="position: fixed; width: '+dx+'px;height: '+dy+'px; z-index: 2; top: '+y+'px; left: '+x+'px"/></label><input id="file-input" onchange="'+FunctionName+'()" type="file" style="visibility: hidden"/>'
-      return output
-  }
+  
 //przykłady użycia funkcji
 //btoa() string to base64
 //atob() base64 to string
+//zmienna
+var imgimp = '<label for="omf"         ><img           src="/ui/state_image_om.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  40%;           " /></label       ><input         id="omf"         type="file"         style="visibility: hidden" 	   accept="image/png"       /> <label for="onf"         ><img           src="/ui/state_image_on.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  50%;           " /></label       ><input         id="onf"         type="file"         style="visibility: hidden" 	   accept="image/png"       /> <label for="zmf"         ><img           src="/ui/state_image_zm.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  60%;           "/></label       ><input         id="zmf"         type="file"         style="visibility: hidden" 	   accept="image/png"       /> <label for="znf"         ><img           src="/ui/state_image_zn.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  70%;           " /></label       ><input         id="znf"         type="file"         style="visibility: hidden" 	   accept="image/png"       />'
