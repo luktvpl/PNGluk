@@ -648,23 +648,14 @@ setInterval(() => {
     if(som==1)mruga = "m"
 }, 1000);
 // mic sprawdzanie (mówienie)
+var AudioStream;
 function startrec() {
-    rec = true;
-}
-    
-
-var rec = false;
-navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
-    //start rec
-    function checkrec(){
-        
-        if(rec){
-        rec=false
-        clog("ok")
+    clog("ok")
+    stopss = false
         var canvas = document.getElementById("c");
         var canvasStream = canvas.captureStream();
         var finalStream = new MediaStream();
-        getTracks(stream, "audio").forEach(function (track) {
+        getTracks(AudioStream, "audio").forEach(function (track) {
             finalStream.addTrack(track);
         });
         getTracks(canvasStream, "video").forEach(function (track) {
@@ -681,16 +672,20 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
                 var blob = recorder.getBlob();
                 invokeSaveAsDialog(blob, "plik.webm");
                 rec = false
-                stream.stop();
+                AudioStream.stop();
                 canvasStream.stop();
               });
               return;
             }
             setTimeout(looper, 100);
           })();
-        }
-    }
-    setInterval(checkrec,100)
+}
+
+
+var rec = false;
+navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    //start rec
+    AudioStream = stream;
     //głośność mikrofonu
     audioContext = new AudioContext();
     analyser = audioContext.createAnalyser();
