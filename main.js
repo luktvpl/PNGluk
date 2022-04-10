@@ -1,53 +1,13 @@
 
 var screen = document.getElementById("c");
+var save;
 var diveł = document.getElementById("diveł");
 var c = screen.getContext("2d");
 var stopss = false;
 function stop(){
     stopss = true;
 }
-try{
-function openFullscreen() {
-    recalcdata()
-    var canvas = document.getElementById("html");
-    if(canvas.requestFullScreen)
-        canvas.requestFullScreen();
-    else if(canvas.webkitRequestFullScreen)
-        canvas.webkitRequestFullScreen();
-    else if(canvas.mozRequestFullScreen)
-        canvas.mozRequestFullScreen();
-    
-  }
-}catch{
 
-}
-var save ={
-    
-}
-function checksave(){
-    
-}
-function saveSave(cvalue) {
-    const d = new Date();
-    d.setTime(d.getTime() + (360*24*60*60*1000));
-    let expires = "expires="+ d.toUTCString();
-    document.cookie = "save" + "=" + JSON.stringify(cvalue) + ";" + expires + ";path=/";
-  }
-  function loadSave() {
-    let name = "save" + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
 var TapLocation = {x:0,y:0}
 var debug = true;
 var micDebug = false;
@@ -137,11 +97,15 @@ var assety = {
     ui_text_move:"",
     ui_title_advance:"",
     ui_title_author:"",
-    invisible:""
+    invisible:"",
+    recfalse:"",
+    rectrue:"",
 }
 //lista asstetów (ui)
 var AssetsList = [
     "screen_blue",
+    "recfalse",
+    "rectrue",
     "screen_green",
     "screen_pink",
     "state_image_om",
@@ -210,7 +174,7 @@ function LoadUI() {
         }
         setTimeout(() => {
            if (asset == AssetsList[AssetsList.length*1-1]){
-                screen = "options";
+                screen = "main_and_ui";
                 recalcdata()
             } 
         }, 100);
@@ -244,16 +208,7 @@ var ASscene={
 
 }
 
-  var data = {
-    s1 : {
-        loaded:true,
-        //1-tylko mówienie 2-mówianie i mruganie
-        type:1,
-        on: "./demo/on.png",
-        om: "./demo/om.png",
-        zn: "./demo/zn.png",
-        zm: "./demo/zm.png"
-    }}
+  
 
     //AS-aktualny stan
     var ASon = new Image();
@@ -261,14 +216,24 @@ var ASscene={
     var ASzn = new Image();
     var ASzm = new Image();
 function setstate(statedate){
- 
+    ASon = new Image();
+    fetch(statedate["on"], {referrer:""})
+    ASon.setAttribute('crossOrigin', 'anonymous');
+    ASom = new Image();
+    fetch(statedate["om"], {referrer:""})
+    ASom.setAttribute('crossOrigin', 'anonymous');
+    ASzn = new Image();
+    fetch(statedate["zn"], {referrer:""})
+    ASzn.setAttribute('crossOrigin', 'anonymous');
+    ASzm = new Image();
+    fetch(statedate["zm"], {referrer:""})
+    ASzm.setAttribute('crossOrigin', 'anonymous');
     ASon.src = statedate["on"];
     ASom.src = statedate["om"];
     ASzn.src = statedate["zn"];
     ASzm.src = statedate["zm"];
 
 }
-setstate(data.s1);
 
 
 function start(){
@@ -307,7 +272,7 @@ function render(){
             c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
             //reszta ui
             c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y,RenderData.state_select.dx,RenderData.state_select.dy)
-            c.drawImage(assety.ui_button_experimental,RenderData.ui_button_experimental.x,RenderData.ui_button_experimental.y,RenderData.ui_button_experimental.dx,RenderData.ui_button_experimental.dy)
+            c.drawImage(assety["rec"+rec],RenderData.ui_button_experimental.x,RenderData.ui_button_experimental.y,RenderData.ui_button_experimental.dx,RenderData.ui_button_experimental.dy)
             c.drawImage(assety.ui_button_hide,RenderData.ui_button_hide.x,RenderData.ui_button_hide.y,RenderData.ui_button_hide.dx,RenderData.ui_button_hide.dy)
             c.drawImage(assety.ui_button_options,RenderData.ui_button_options.x,RenderData.ui_button_options.y,RenderData.ui_button_options.dx,RenderData.ui_button_options.dy)
             /*
@@ -523,6 +488,7 @@ function tap(x,y){
         break;
         case "main_and_ui" :
             checktouch(RenderData.ui_button_hide,x,y);
+            //teraz record
             checktouch(RenderData.ui_button_experimental,x,y);
             checktouch(RenderData.ui_button_options,x,y);
         break;
@@ -536,9 +502,6 @@ function tap(x,y){
 
 
         break;
-        case "experimental":
-            checktouch(RenderData.ui_button_back,x,y);
-        break
         
         default:
 
@@ -558,13 +521,52 @@ function funkcjiie(funct) {
         case "options" :
             screen="options"
             diveł.innerHTML = imgimp;
+            var tempp = ["on","om","zm","zn"]
+            tempp.forEach(el => {
+                console.log(el)
+                window[el] = document.getElementById(el+"f")
+                window[el].addEventListener("change", ev => {
+                    var myHeaders = new Headers();
+                    myHeaders.append("Authorization", "Client-ID f0820159d772867");
+                    const formdata = new FormData()
+                    formdata.append("image", ev.target.files[0])
+                    
+                    var requestOptions = {
+                        method: 'POST',
+                        headers: myHeaders,
+                        body: formdata,
+                        redirect: 'follow'
+                      };
+                      fetch("https://api.imgur.com/3/image", requestOptions)
+                      .then(response => response.text())
+                      .then(result => {
+                          var data = JSON.parse(result)
+                          console.log(data.data.link)
+                          save.s1[el] = data.data.link
+                          saveSave()
+                          
+                          setstate(save["s1"]);
+
+                      })
+                      .catch(error => console.log('error', error));
+                })
+            })
         break
         case "experimental" :
-            screen="experimental"
+            switch (rec) {
+                case true:
+                    stopss = true
+                    break;
+            
+                default:
+                    stopss = false
+                    startrec();
+                    break;
+            }
         break
         case "back":
             screen="main_and_ui"
-            document.getElementById("other").innerHTML = "";
+            diveł.innerHTML = "";
         break
         case "nbg":
             switch (tło.AS) {
@@ -652,11 +654,92 @@ setInterval(() => {
     var som =getRandomInt(0,3)
     if(som==1)mruga = "m"
 }, 1000);
+//save
+try{
+    function openFullscreen() {
+        recalcdata()
+        var canvas = document.getElementById("html");
+        if(canvas.requestFullScreen)
+            canvas.requestFullScreen();
+        else if(canvas.webkitRequestFullScreen)
+            canvas.webkitRequestFullScreen();
+        else if(canvas.mozRequestFullScreen)
+            canvas.mozRequestFullScreen();
+        
+      }
+    }catch{
+    
+    }
+    checksave()
+    function checksave(){
+        try {
+           var ss = loadSave().toString()
+        cc = JSON.parse(ss)
+        console.log(cc)
+        if(cc.set == true) {
+            save = cc
+            console.log("ok")
+        }else{
+            save = {
+                s1 : {
+                    on: "./demo/on.png",
+                    om: "./demo/om.png",
+                    zn: "./demo/zn.png",
+                    zm: "./demo/zm.png"
+                },
+            set: true
+            }
+            saveSave()
+            
+        } 
+        } catch {
+            
+        }
+        
+        setstate(save["s1"]);
+        }
+        
+    function test(){
+        save = {
+            s1 : {
+                on: "https://i.imgur.com/J4jGTg9.png",
+                om: "https://i.imgur.com/J4jGTg9.png",
+                zn: "https://i.imgur.com/J4jGTg9.png",
+                zm: "https://i.imgur.com/J4jGTg9.png"
+            }}
+            setstate(save["s1"]);
+    }
+    function saveSave() {
+        const d = new Date();
+        d.setTime(d.getTime() + (360*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = "save" + "=" + JSON.stringify(save) + ";" + expires + ";path=/";
+      }
+      function loadSave() {
+        let name = "save" + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+    function creste(){
+        save = {}
+        saveSave()
+    }
 // mic sprawdzanie (mówienie)
 var AudioStream;
 function startrec() {
     clog("ok")
     stopss = false
+    rec = true
         var canvas = document.getElementById("c");
         var canvasStream = canvas.captureStream();
         var finalStream = new MediaStream();
