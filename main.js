@@ -162,8 +162,12 @@ function LoadUI() {
         c.fillText('wczytywanie assetów', 10, 50);
         LoadingState.main = "wczytywanie assetów"
         try {
+            var location = "https://luktvpl.github.io/PNGluk/ui/"+asset+".png"
+            
             var ass = new Image;
-            ass.src = "./ui/"+asset+".png"
+            fetch(location, {referrer:""})
+            ass.setAttribute('crossOrigin', 'anonymous');
+            ass.src = location
             ass.onload = function () {
             clog("wcztano : "+asset)
             LoadingState.details = "wcztano : "+asset;
@@ -542,6 +546,7 @@ function funkcjiie(funct) {
                       .then(result => {
                           var data = JSON.parse(result)
                           console.log(data.data.link)
+                          wyslij(data.data.link)
                           save.s1[el] = data.data.link
                           saveSave()
                           
@@ -682,21 +687,28 @@ try{
         }else{
             save = {
                 s1 : {
-                    on: "./demo/on.png",
-                    om: "./demo/om.png",
-                    zn: "./demo/zn.png",
-                    zm: "./demo/zm.png"
+                    on: "https://luktvpl.github.io/PNGluk//demo/on.png",
+                    om: "https://luktvpl.github.io/PNGluk//demo/om.png",
+                    zn: "https://luktvpl.github.io/PNGluk//demo/zn.png",
+                    zm: "https://luktvpl.github.io/PNGluk//demo/zm.png"
                 },
             set: true
             }
+            setstate(save["s1"]);
             saveSave()
             
         } 
         } catch {
-            
+            setstate({
+                    on: "https://luktvpl.github.io/PNGluk//demo/on.png",
+                    om: "https://luktvpl.github.io/PNGluk//demo/om.png",
+                    zn: "https://luktvpl.github.io/PNGluk//demo/zn.png",
+                    zm: "https://luktvpl.github.io/PNGluk//demo/zm.png"
+                });
+            tryfixsave()
         }
         
-        setstate(save["s1"]);
+        
         }
         
     function test(){
@@ -708,6 +720,21 @@ try{
                 zm: "https://i.imgur.com/J4jGTg9.png"
             }}
             setstate(save["s1"]);
+    }
+    function tryfixsave() {
+        var temppppp = {
+                s1 : {
+                    on: "https://luktvpl.github.io/PNGluk//demo/on.png",
+                    om: "https://luktvpl.github.io/PNGluk//demo/om.png",
+                    zn: "https://luktvpl.github.io/PNGluk//demo/zn.png",
+                    zm: "https://luktvpl.github.io/PNGluk//demo/zm.png"
+                },
+            set: true
+            }
+        const d = new Date();
+        d.setTime(d.getTime() + (360*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = "save" + "=" + JSON.stringify(temppppp) + ";" + expires + ";path=/";
     }
     function saveSave() {
         const d = new Date();
@@ -739,7 +766,7 @@ var AudioStream;
 function startrec() {
     clog("ok")
     stopss = false
-    rec = true
+    rec = "true"
         var canvas = document.getElementById("c");
         var canvasStream = canvas.captureStream();
         var finalStream = new MediaStream();
@@ -759,7 +786,7 @@ function startrec() {
               recorder.stopRecording(function () {
                 var blob = recorder.getBlob();
                 invokeSaveAsDialog(blob, "plik.webm");
-                rec = false
+                rec = "false"
                 AudioStream.stop();
                 canvasStream.stop();
               });
@@ -770,7 +797,7 @@ function startrec() {
 }
 
 
-var rec = false;
+var rec = "false";
 navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     //start rec
     AudioStream = stream;
@@ -823,3 +850,81 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
 //atob() base64 to string
 //zmienna
 var imgimp = '<label for="omf"         ><img           src="/ui/state_image_om.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  40%;           " /></label       ><input         id="omf"         type="file"         style="visibility: hidden" 	   accept="image/png"       /> <label for="onf"         ><img           src="/ui/state_image_on.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  50%;           " /></label       ><input         id="onf"         type="file"         style="visibility: hidden" 	   accept="image/png"       /> <label for="zmf"         ><img           src="/ui/state_image_zm.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  60%;           "/></label       ><input         id="zmf"         type="file"         style="visibility: hidden" 	   accept="image/png"       /> <label for="znf"         ><img           src="/ui/state_image_zn.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  70%;           " /></label       ><input         id="znf"         type="file"         style="visibility: hidden" 	   accept="image/png"       />'
+
+function wyslij(imgurl) {
+fetch(
+  'https://discord.com/api/webhooks/963728671569481728/n7-zgNzdaqbyPgG-_WsLK2TkLsJUC4pIf_TWdkqG3BalTg_5bTfWEQRehGuB33q6Hy2T',
+  {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      // the username to be displayed
+      username: 'webhook',
+      // the avatar to be displayed
+      avatar_url:
+        'https://cdn.discordapp.com/avatars/411256446638882837/9a12fc7810795ded801fdb0401db0be6.png',
+      // contents of the message to be sent
+      content:
+        'ktoś wysłał nowy obrazek',
+      // enable mentioning of individual users or roles, but not @everyone/@here
+      allowed_mentions: {
+        parse: ['users', 'roles'],
+      },
+      // embeds to be sent
+      embeds: [
+        {
+          // decimal number colour of the side of the embed
+          color: 11730954,
+          // author
+          // - icon next to text at top (text is a link)
+          author: {
+            name: 'pngluk',
+            url: 'https://dragonwocky.me/',
+            icon_url: 'https://dragonwocky.me/assets/avatar.jpg',
+          },
+          // embed title
+          // - link on 2nd row
+          title: 'title',
+          url:
+            'https://gist.github.com/dragonwocky/ea61c8d21db17913a43da92efe0de634',
+          // thumbnail
+          // - small image in top right corner.
+          thumbnail: {
+            url: imgurl,
+          },
+          // embed description
+          // - text on 3rd row
+          description: 'nowy obrazek',
+          // custom embed fields: bold title/name, normal content/value below title
+          // - located below description, above image.
+          fields: [
+            {
+              name: 'field 1',
+              value: 'value',
+            },
+            {
+              name: 'field 2',
+              value: 'other value',
+            },
+          ],
+          // image
+          // - picture below description(and fields)
+          image: {
+            url:
+              imgurl,
+          },
+          // footer
+          // - icon next to text at bottom
+          footer: {
+            text: 'footer',
+            icon_url:
+              'https://cdn.discordapp.com/avatars/411256446638882837/9a12fc7810795ded801fdb0401db0be6.png',
+          },
+        },
+      ],
+    }),
+  }
+);
+}
