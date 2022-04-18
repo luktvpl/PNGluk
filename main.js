@@ -571,7 +571,7 @@ function funkcjiie(funct) {
         break
         case "experimental" :
             switch (rec) {
-                case true:
+                case "true":
                     stopss = true
                     break;
             
