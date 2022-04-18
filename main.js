@@ -597,20 +597,30 @@ function funkcjiie(funct) {
                     tło.AS=0
                 break;
             }
+            save.tło = tło.AS
+            saveSave();
             clog(tło.AS)
             clog("ok")
         break
         case "p10":
             MocM +=10
+            save.moc = MocM
+            saveSave()
         break
         case "p1":
             MocM +=1
+            save.moc = MocM
+            saveSave()
         break
         case "m10":
             MocM -=10
+            save.moc = MocM
+            saveSave()
         break
         case "m1":
             MocM -=1
+            save.moc = MocM
+            saveSave()
         break
     }
 }
@@ -697,6 +707,8 @@ try{
         if(cc.set == true) {
             save = cc
             console.log("ok")
+            tło.AS = save.tło
+            MocM = save.moc
             setstate(save.s1);
             recalcdata()
             
@@ -708,8 +720,12 @@ try{
                     zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
                     zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
                 },
+            tło:0,
+            moc:25,
             set: true
             }
+            MocM = save.moc
+            tło.AS = save.tło
             setstate(save.s1);
             saveSave()
             recalcdata()
@@ -722,6 +738,7 @@ try{
                     zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
                     zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
                 });
+            
             tryfixsave()
             recalcdata()
         }
@@ -747,6 +764,8 @@ try{
                     zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
                     zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
                 },
+            moc:25,
+            tło:0,
             set: false
             }
         const d = new Date();
