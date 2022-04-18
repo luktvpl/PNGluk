@@ -21,6 +21,16 @@ screen.addEventListener("mousedown",function(e) {
     TapLocation = getMousePos(e)
     tap(TapLocation.x,TapLocation.y);
 },false)
+//reset save
+var timer;
+screen.addEventListener("mousedown", function(e) {
+    console.log("cos")
+    timer = setTimeout( tryfixsave, 5000 );
+  },false);
+  
+screen.addEventListener("mouseup", function(e) {
+    clearTimeout( timer );
+  },false);
 //zdobywanie pozycji myszki
 function getMousePos(mouseEvent) {
     return {
@@ -172,6 +182,7 @@ function LoadUI() {
             clog("wcztano : "+asset)
             LoadingState.details = "wcztano : "+asset;
             assety[asset] = ass;
+            recalcdata()
         }
         }catch{
             clog("nie wcztano : "+asset)
@@ -551,6 +562,7 @@ function funkcjiie(funct) {
                           saveSave()
                           
                           setstate(save["s1"]);
+                          recalcdata()
 
                       })
                       .catch(error => console.log('error', error));
@@ -659,6 +671,7 @@ setInterval(() => {
     var som =getRandomInt(0,3)
     if(som==1)mruga = "m"
 }, 1000);
+
 //save
 try{
     function openFullscreen() {
@@ -684,28 +697,33 @@ try{
         if(cc.set == true) {
             save = cc
             console.log("ok")
+            setstate(save.s1);
+            recalcdata()
+            
         }else{
             save = {
                 s1 : {
-                    on: "https://luktvpl.github.io/PNGluk//demo/on.png",
-                    om: "https://luktvpl.github.io/PNGluk//demo/om.png",
-                    zn: "https://luktvpl.github.io/PNGluk//demo/zn.png",
-                    zm: "https://luktvpl.github.io/PNGluk//demo/zm.png"
+                    on: "https://luktvpl.github.io/PNGluk/demo/on.png",
+                    om: "https://luktvpl.github.io/PNGluk/demo/om.png",
+                    zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
+                    zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
                 },
             set: true
             }
-            setstate(save["s1"]);
+            setstate(save.s1);
             saveSave()
+            recalcdata()
             
         } 
         } catch {
             setstate({
-                    on: "https://luktvpl.github.io/PNGluk//demo/on.png",
-                    om: "https://luktvpl.github.io/PNGluk//demo/om.png",
-                    zn: "https://luktvpl.github.io/PNGluk//demo/zn.png",
-                    zm: "https://luktvpl.github.io/PNGluk//demo/zm.png"
+                    on: "https://luktvpl.github.io/PNGluk/demo/on.png",
+                    om: "https://luktvpl.github.io/PNGluk/demo/om.png",
+                    zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
+                    zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
                 });
             tryfixsave()
+            recalcdata()
         }
         
         
@@ -724,17 +742,18 @@ try{
     function tryfixsave() {
         var temppppp = {
                 s1 : {
-                    on: "https://luktvpl.github.io/PNGluk//demo/on.png",
-                    om: "https://luktvpl.github.io/PNGluk//demo/om.png",
-                    zn: "https://luktvpl.github.io/PNGluk//demo/zn.png",
-                    zm: "https://luktvpl.github.io/PNGluk//demo/zm.png"
+                    on: "https://luktvpl.github.io/PNGluk/demo/on.png",
+                    om: "https://luktvpl.github.io/PNGluk/demo/om.png",
+                    zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
+                    zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
                 },
-            set: true
+            set: false
             }
         const d = new Date();
         d.setTime(d.getTime() + (360*24*60*60*1000));
         let expires = "expires="+ d.toUTCString();
         document.cookie = "save" + "=" + JSON.stringify(temppppp) + ";" + expires + ";path=/";
+        window.location.reload(true)
     }
     function saveSave() {
         const d = new Date();
@@ -849,7 +868,7 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
 //btoa() string to base64
 //atob() base64 to string
 //zmienna
-var imgimp = '<label for="omf"         ><img           src="/ui/state_image_om.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  40%;           " /></label       ><input         id="omf"         type="file"         style="visibility: hidden" 	   accept="image/png"       /> <label for="onf"         ><img           src="/ui/state_image_on.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  50%;           " /></label       ><input         id="onf"         type="file"         style="visibility: hidden" 	   accept="image/png"       /> <label for="zmf"         ><img           src="/ui/state_image_zm.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  60%;           "/></label       ><input         id="zmf"         type="file"         style="visibility: hidden" 	   accept="image/png"       /> <label for="znf"         ><img           src="/ui/state_image_zn.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  70%;           " /></label       ><input         id="znf"         type="file"         style="visibility: hidden" 	   accept="image/png"       />'
+var imgimp = '<label for="omf"         ><img           src="/ui/state_image_om.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  40%;           " /></label       ><input         id="omf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="onf"         ><img           src="/ui/state_image_on.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  50%;           " /></label       ><input         id="onf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="zmf"         ><img           src="/ui/state_image_zm.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  60%;           "/></label       ><input         id="zmf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="znf"         ><img           src="/ui/state_image_zn.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  70%;           " /></label       ><input         id="znf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       />'
 
 function wyslij(imgurl) {
 fetch(

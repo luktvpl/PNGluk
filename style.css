@@ -5,11 +5,11 @@ canvas {
   left: 0px;
   top: 0px;
   position: fixed;
-  z-index: 1;
-}
-div {
-  position: fixed;
   z-index: 2;
+}
+label {
+  position: fixed;
+  z-index: 3;
 }
 input {
   position: fixed;
