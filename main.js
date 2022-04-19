@@ -110,9 +110,17 @@ var assety = {
     invisible:"",
     recfalse:"",
     rectrue:"",
+    state0:"",
+    state1:"",
+    state2:"",
+    state3:"",
 }
 //lista asstetów (ui)
 var AssetsList = [
+    "state0",
+    "state1",
+    "state2",
+    "state3",
     "screen_blue",
     "recfalse",
     "rectrue",
@@ -286,9 +294,10 @@ function render(){
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
             //reszta ui
+            c.drawImage(assety.ui_button_hide,RenderData.ui_button_hide.x,RenderData.ui_button_hide.y,RenderData.ui_button_hide.dx,RenderData.ui_button_hide.dy)
             c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y,RenderData.state_select.dx,RenderData.state_select.dy)
             c.drawImage(assety["rec"+rec],RenderData.ui_button_experimental.x,RenderData.ui_button_experimental.y,RenderData.ui_button_experimental.dx,RenderData.ui_button_experimental.dy)
-            c.drawImage(assety.ui_button_hide,RenderData.ui_button_hide.x,RenderData.ui_button_hide.y,RenderData.ui_button_hide.dx,RenderData.ui_button_hide.dy)
+            c.drawImage(assety["state"+save.p],RenderData.state0.x,RenderData.state0.y,RenderData.state0.dx,RenderData.state0.dy)
             c.drawImage(assety.ui_button_options,RenderData.ui_button_options.x,RenderData.ui_button_options.y,RenderData.ui_button_options.dx,RenderData.ui_button_options.dy)
             /*
             c.fillText("hej",0,50)*/
@@ -403,6 +412,16 @@ function recalcdata(){
         fixy:assety.ui_button_experimental.height*monożnik,
         funct : "options"
     }
+    monożnik = window.height/assety.ui_button_hide.height/3
+    RenderData["state0"]={
+        x:0,
+        y:window.height/3,
+        dx:100,
+        dy:100,
+        fixx:assety.ui_button_experimental.height*monożnik,
+        fixy:assety.ui_button_experimental.width*monożnik*1+assety.ui_button_experimental.width*monożnik,
+        funct : "cp"
+    }
     //back button
     RenderData.ui_button_back ={
         x:assety.ui_button_experimental.width*monożnik*0,
@@ -479,6 +498,7 @@ function recalcdata(){
         x:monożnik*assety.ui_button_p10.width/2*5,
         y:ycorrector+locatormove*2
     }
+    
     clog(RenderData.ui_button_p10)
     //text resize
     RenderData["text"] = Math.round(textScalation*window.innerHeight/25)
@@ -503,7 +523,7 @@ function tap(x,y){
         break;
         case "main_and_ui" :
             checktouch(RenderData.ui_button_hide,x,y);
-            //teraz record
+            //teraz experimenta => record
             checktouch(RenderData.ui_button_experimental,x,y);
             checktouch(RenderData.ui_button_options,x,y);
         break;
@@ -533,6 +553,10 @@ function funkcjiie(funct) {
         case "hide":
             if(screen=="main") screen="main_and_ui";else screen = "main"
         break
+        case "cp":
+            save.p +=1
+            saveSave()
+        break;
         case "options" :
             screen="options"
             diveł.innerHTML = imgimp;
@@ -558,10 +582,10 @@ function funkcjiie(funct) {
                           var data = JSON.parse(result)
                           console.log(data.data.link)
                           wyslij(data.data.link)
-                          save.s1[el] = data.data.link
+                          save["s"+save.s][el] = data.data.link
                           saveSave()
                           
-                          setstate(save["s1"]);
+                          setstate(save["s"+save.s]);
                           recalcdata()
 
                       })
@@ -631,33 +655,91 @@ setTimeout(() => {
 }, 1000);
 function tick(){
     render();
-    skoki();
+    phisic();
 }
 setInterval(tick,16)
 setInterval(chceck,100)
 //podkoni (fizyka)
-var sila=0;
-function skoki(){
-    if(skacze==true){
-        if(mówi=="o"&&sila<3){
-            sila +=0.3
-        }else{
-            if(y>=0){
-            sila=0
-            y=0
+var sila= 0;
+var zwrot = 1;
+pvariants = ["set","set","set","set"]
+function phisic(){
+    switch (save.p) {
+        case 0:
+        y=0
+        x=0
+        break;
+        case 1:
+            x=0;
+            if(mówi=="o"&&sila<3){
+                sila +=0.3
             }else{
-                sila+=-1
+                if(y>=0){
+                sila=0
+                y=0
+                }else{
+                    sila+=-1
+                }
+               
             }
-           
-        }
-        
-        if(y<-10&&sila>0){
             
-        }else {
-            y-=sila;
-        }
-        if(phisicDebuge)clog("y:"+y+" sile:"+sila)
-        
+            if(y<-10&&sila>0){
+                
+            }else {
+                y-=sila;
+            }
+            if(phisicDebuge)clog("y:"+y+" sile:"+sila)
+            break;
+        case 2:
+            if(mówi=="o"&&sila<3){
+                sila +=0.9
+            }else{
+                if(y>=0){
+                sila=0
+                y=0
+                }else{
+                    sila+=-1
+                }
+               
+            }
+            if(mówi=="o"){
+                x+=zwrot;
+                if(x>=3||x<=-3) zwrot = zwrot*-1
+            }
+            
+            if(y<-10&&sila>0){
+                
+            }else {
+                y-=sila;
+            }
+            if(phisicDebuge)clog("y:"+y+" sile:"+sila)
+        break;
+        case 3:
+            if(mówi=="o"&&sila<3){
+                sila +=0.9
+            }else{
+                if(y>=0){
+                sila=0
+                y=0
+                }else{
+                    sila+=-1
+                }
+               
+            }
+                x+=zwrot;
+                if(x>=3||x<=-3) zwrot = zwrot*-1
+            
+            if(y<-10&&sila>0){
+                
+            }else {
+                y-=sila;
+            }
+            if(phisicDebuge)clog("y:"+y+" sile:"+sila)
+        break;
+        default:
+            save.p = 0
+            saveSave()
+            break;
     }
 }
 //wykrywa zmiane rozmiary ekranu
@@ -709,24 +791,34 @@ try{
             console.log("ok")
             tło.AS = save.tło
             MocM = save.moc
-            setstate(save.s1);
+            setstate(save["s"+save.s]);
             recalcdata()
             
         }else{
+            var ds ={
+                on: "https://luktvpl.github.io/PNGluk/demo/on.png",
+                om: "https://luktvpl.github.io/PNGluk/demo/om.png",
+                zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
+                zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
+            }
             save = {
-                s1 : {
-                    on: "https://luktvpl.github.io/PNGluk/demo/on.png",
-                    om: "https://luktvpl.github.io/PNGluk/demo/om.png",
-                    zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
-                    zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
-                },
+                s1 : ds,
+                s2 : ds,
+                s3 : ds,
+                s4 : ds,
+                s5 : ds,
+                s6 : ds,
+                s7 : ds,
+                s8 : ds,
+            p:1,
+            s:1,
             tło:0,
             moc:25,
             set: true
             }
             MocM = save.moc
             tło.AS = save.tło
-            setstate(save.s1);
+            setstate(save["s1"]);
             saveSave()
             recalcdata()
             
@@ -745,27 +837,8 @@ try{
         
         
         }
-        
-    function test(){
-        save = {
-            s1 : {
-                on: "https://i.imgur.com/J4jGTg9.png",
-                om: "https://i.imgur.com/J4jGTg9.png",
-                zn: "https://i.imgur.com/J4jGTg9.png",
-                zm: "https://i.imgur.com/J4jGTg9.png"
-            }}
-            setstate(save["s1"]);
-    }
     function tryfixsave() {
         var temppppp = {
-                s1 : {
-                    on: "https://luktvpl.github.io/PNGluk/demo/on.png",
-                    om: "https://luktvpl.github.io/PNGluk/demo/om.png",
-                    zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
-                    zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
-                },
-            moc:25,
-            tło:0,
             set: false
             }
         const d = new Date();
