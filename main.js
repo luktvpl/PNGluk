@@ -412,16 +412,17 @@ function recalcdata(){
         fixy:assety.ui_button_experimental.height*monożnik,
         funct : "options"
     }
-    monożnik = window.height/assety.ui_button_hide.height/3
+    var monożnikt = window.innerHeight/assety.state0.height/3
     RenderData["state0"]={
         x:0,
-        y:window.height/3,
-        dx:100,
-        dy:100,
-        fixx:assety.ui_button_experimental.height*monożnik,
-        fixy:assety.ui_button_experimental.width*monożnik*1+assety.ui_button_experimental.width*monożnik,
+        y:window.innerHeight/3,
+        dx:assety.state0.width*monożnikt,
+        dy:assety.state0.height*monożnikt,
         funct : "cp"
     }
+    RenderData.state0.fixx = RenderData.state0.x+RenderData.state0.dx
+    RenderData.state0.fixy = RenderData.state0.y+RenderData.state0.dy
+    console.log(RenderData.state0)
     //back button
     RenderData.ui_button_back ={
         x:assety.ui_button_experimental.width*monożnik*0,
@@ -499,7 +500,6 @@ function recalcdata(){
         y:ycorrector+locatormove*2
     }
     
-    clog(RenderData.ui_button_p10)
     //text resize
     RenderData["text"] = Math.round(textScalation*window.innerHeight/25)
     clog(RenderData.text+"textmnożnik")
@@ -526,6 +526,7 @@ function tap(x,y){
             //teraz experimenta => record
             checktouch(RenderData.ui_button_experimental,x,y);
             checktouch(RenderData.ui_button_options,x,y);
+            checktouch(RenderData.state0,x,y)
         break;
         case "options" :
             checktouch(RenderData.ui_button_back,x,y);
