@@ -12,7 +12,7 @@ var TapLocation = {x:0,y:0}
 var debug = true;
 var micDebug = false;
 var phisicDebuge = false;
-var mc = new FontFace("minecraft",'url("./font/minecraft_pl_font.woff")')
+var mc = new FontFace("minecraft",'url("/font/minecraft_pl_font.woff")')
 var HtmlIN = document.getElementById("other")
 var textScalation = 57/28;
 var save = 
@@ -180,7 +180,7 @@ function LoadUI() {
         c.fillText('wczytywanie assetów', 10, 50);
         LoadingState.main = "wczytywanie assetów"
         try {
-            var location = "./ui/"+asset+".png"
+            var location = "/ui/"+asset+".png"
             
             var ass = new Image;
             fetch(location, {referrer:""})
@@ -913,7 +913,7 @@ function chceck(){
 }
 //tets()
 function tets(){
-    HtmlIN.innerHTML = ImageInputGenerate("./ui/state_image_zn.png",500,500,"recalcdata")
+    HtmlIN.innerHTML = ImageInputGenerate("/ui/state_image_zn.png",500,500,"recalcdata")
     
 }
 
@@ -956,10 +956,10 @@ try{
             
         }else{
             var ds ={
-                on: "./demo/on.png",
-                om: "./demo/om.png",
-                zn: "./demo/zn.png",
-                zm: "./demo/zm.png"
+                on: "/demo/on.png",
+                om: "/demo/om.png",
+                zn: "/demo/zn.png",
+                zm: "/demo/zm.png"
             }
             save = {
                 s1 : ds,
@@ -985,10 +985,10 @@ try{
         } 
         } catch {
             setstate({
-                    on: "./demo/on.png",
-                    om: "./demo/om.png",
-                    zn: "./demo/zn.png",
-                    zm: "./demo/zm.png"
+                    on: "/demo/on.png",
+                    om: "/demo/om.png",
+                    zn: "/demo/zn.png",
+                    zm: "/demo/zm.png"
                 });
             
             tryfixsave()
@@ -1120,7 +1120,7 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
 //btoa() string to base64
 //atob() base64 to string
 //zmienna
-var imgimp = '<label for="omf"         ><img           src="./ui/state_image_om.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  40%;           " /></label       ><input         id="omf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="onf"         ><img           src="./ui/state_image_on.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  50%;           " /></label       ><input         id="onf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="zmf"         ><img           src="./ui/state_image_zm.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  60%;           "/></label       ><input         id="zmf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="znf"         ><img           src="./ui/state_image_zn.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  70%;           " /></label       ><input         id="znf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       />'
+var imgimp = '<label for="omf"         ><img           src="/ui/state_image_om.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  40%;           " /></label       ><input         id="omf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="onf"         ><img           src="/ui/state_image_on.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  50%;           " /></label       ><input         id="onf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="zmf"         ><img           src="/ui/state_image_zm.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  60%;           "/></label       ><input         id="zmf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="znf"         ><img           src="/ui/state_image_zn.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  70%;           " /></label       ><input         id="znf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       />'
 
 function wyslij(imgurl) {
 fetch(
