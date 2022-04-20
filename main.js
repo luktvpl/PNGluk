@@ -227,6 +227,7 @@ var SceenData={
         "doll"
     ]
 }
+var tmps 
 var ASscene={
 
 }
@@ -299,6 +300,9 @@ function render(){
             c.drawImage(assety["rec"+rec],RenderData.ui_button_experimental.x,RenderData.ui_button_experimental.y,RenderData.ui_button_experimental.dx,RenderData.ui_button_experimental.dy)
             c.drawImage(assety["state"+save.p],RenderData.state0.x,RenderData.state0.y,RenderData.state0.dx,RenderData.state0.dy)
             c.drawImage(assety.ui_button_options,RenderData.ui_button_options.x,RenderData.ui_button_options.y,RenderData.ui_button_options.dx,RenderData.ui_button_options.dy)
+            c.fillStyle = "green";
+            
+            c.fillRect(RenderData.stateSelector.m2*tmps+RenderData.stateSelector.m1,RenderData.state_select.y+RenderData.stateSelector.m3,RenderData.stateSelector.m1*14,RenderData.stateSelector.m3*6);
             /*
             c.fillText("hej",0,50)*/
             break;
@@ -306,16 +310,19 @@ function render(){
             c.fillStyle = tło.colors[tło.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.drawImage(assety.ui_button_back,RenderData.ui_button_back.x,RenderData.ui_button_back.y,RenderData.ui_button_back.dx,RenderData.ui_button_back.dy)
-            c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y-RenderData.state_select.dy,RenderData.state_select.dx,RenderData.state_select.dy)
+            c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y,RenderData.state_select.dx,RenderData.state_select.dy)
             c.drawImage(assety["screen_"+tło.names[tło.AS]],RenderData.screen_blue.x,RenderData.screen_blue.y,RenderData.screen_blue.dx,RenderData.screen_blue.dy)
             c.drawImage(assety.ui_button_p10,RenderData.ui_button_p10.x,RenderData.ui_button_p10.y,RenderData.ui_button_p10.dx,RenderData.ui_button_p10.dy)
             c.drawImage(assety.ui_button_p1,RenderData.ui_button_p1.x,RenderData.ui_button_p1.y,RenderData.ui_button_p1.dx,RenderData.ui_button_p1.dy)
             c.drawImage(assety.ui_button_m10,RenderData.ui_button_m10.x,RenderData.ui_button_m10.y,RenderData.ui_button_m10.dx,RenderData.ui_button_m10.dy)
             c.drawImage(assety.ui_button_m1,RenderData.ui_button_m1.x,RenderData.ui_button_m1.y,RenderData.ui_button_m1.dx,RenderData.ui_button_m1.dy)
+            c.fillStyle = "green";
+            c.fillRect(RenderData.stateSelector.m2*tmps+RenderData.stateSelector.m1,RenderData.state_select.y+RenderData.stateSelector.m3,RenderData.stateSelector.m1*14,RenderData.stateSelector.m3*6);
             c.fillStyle = 'black';
             c.fillText("kolor tła",RenderData.textData.background.x,RenderData.textData.background.y)
             c.fillText(MocM,RenderData.textData.micforce.x,RenderData.textData.micforce.y)
             c.fillText(loudness+" : moc mikrofonu",RenderData.textData.micstate.x,RenderData.textData.micstate.y)
+            
             break;
         case "loading":
             c.fillStyle = tło.colors[tło.AS];
@@ -376,6 +383,7 @@ function recalcdata(){
     }
     //inne assety
     //(state select)
+    tmps = save.s-1
     var monożnik= window.innerWidth/assety.state_select.width
     RenderData.state_select = {
         x:0,
@@ -499,7 +507,74 @@ function recalcdata(){
         x:monożnik*assety.ui_button_p10.width/2*5,
         y:ycorrector+locatormove*2
     }
-    
+    //state selector fix data calculator 8x16x8
+    var fixtemp1 = window.innerWidth/128
+    var fixtemp2 = window.innerWidth/8
+    var fixtemp3 = RenderData.state_select.dy/8
+    RenderData["stateSelector"] = {
+        m1:fixtemp1,
+        m2:fixtemp2,
+        m3:fixtemp3,
+        m4:RenderData.state_select.dy,
+        m5:window.innerHeight
+    }
+    //touch change
+    RenderData["ss1"] = {
+        x:RenderData.stateSelector.m2*0,
+        y:RenderData.stateSelector.m4,
+        fixx:RenderData.stateSelector.m2*1,
+        fixy:RenderData.stateSelector.m5,
+        funct : "s1"
+    }
+    RenderData["ss2"] = {
+        x:RenderData.stateSelector.m2*1,
+        y:RenderData.stateSelector.m4,
+        fixx:RenderData.stateSelector.m2*2,
+        fixy:RenderData.stateSelector.m5,
+        funct : "s2"
+    }
+    RenderData["ss3"] = {
+        x:RenderData.stateSelector.m2*2,
+        y:RenderData.stateSelector.m4,
+        fixx:RenderData.stateSelector.m2*3,
+        fixy:RenderData.stateSelector.m5,
+        funct : "s3"
+    }
+    RenderData["ss4"] = {
+        x:RenderData.stateSelector.m2*3,
+        y:RenderData.stateSelector.m4,
+        fixx:RenderData.stateSelector.m2*4,
+        fixy:RenderData.stateSelector.m5,
+        funct : "s4"
+    }
+    RenderData["ss5"] = {
+        x:RenderData.stateSelector.m2*4,
+        y:RenderData.stateSelector.m4,
+        fixx:RenderData.stateSelector.m2*5,
+        fixy:RenderData.stateSelector.m5,
+        funct : "s5"
+    }
+    RenderData["ss6"] = {
+        x:RenderData.stateSelector.m2*5,
+        y:RenderData.stateSelector.m4,
+        fixx:RenderData.stateSelector.m2*6,
+        fixy:RenderData.stateSelector.m5,
+        funct : "s6"
+    }
+    RenderData["ss7"] = {
+        x:RenderData.stateSelector.m2*6,
+        y:RenderData.stateSelector.m4,
+        fixx:RenderData.stateSelector.m2*7,
+        fixy:RenderData.stateSelector.m5,
+        funct : "s7"
+    }
+    RenderData["ss8"] = {
+        x:RenderData.stateSelector.m2*7,
+        y:RenderData.stateSelector.m4,
+        fixx:RenderData.stateSelector.m2*8,
+        fixy:RenderData.stateSelector.m5,
+        funct : "s8"
+    }
     //text resize
     RenderData["text"] = Math.round(textScalation*window.innerHeight/25)
     clog(RenderData.text+"textmnożnik")
@@ -527,6 +602,15 @@ function tap(x,y){
             checktouch(RenderData.ui_button_experimental,x,y);
             checktouch(RenderData.ui_button_options,x,y);
             checktouch(RenderData.state0,x,y)
+            checktouch(RenderData.ss1,x,y)
+            checktouch(RenderData.ss2,x,y)
+            checktouch(RenderData.ss3,x,y)
+            checktouch(RenderData.ss4,x,y)
+            checktouch(RenderData.ss5,x,y)
+            checktouch(RenderData.ss6,x,y)
+            checktouch(RenderData.ss7,x,y)
+            checktouch(RenderData.ss8,x,y)
+            
         break;
         case "options" :
             checktouch(RenderData.ui_button_back,x,y);
@@ -535,7 +619,14 @@ function tap(x,y){
             checktouch(RenderData.ui_button_p1,x,y)
             checktouch(RenderData.ui_button_m10,x,y)
             checktouch(RenderData.ui_button_m1,x,y)
-
+            checktouch(RenderData.ss1,x,y)
+            checktouch(RenderData.ss2,x,y)
+            checktouch(RenderData.ss3,x,y)
+            checktouch(RenderData.ss4,x,y)
+            checktouch(RenderData.ss5,x,y)
+            checktouch(RenderData.ss6,x,y)
+            checktouch(RenderData.ss7,x,y)
+            checktouch(RenderData.ss8,x,y)
 
         break;
         
@@ -647,6 +738,12 @@ function funkcjiie(funct) {
             save.moc = MocM
             saveSave()
         break
+        case "s1":
+            save.s = 1
+            tmps = save.s-1
+            setstate(save["s"+save.s])
+            saveSave()
+        break;
     }
 }
 //podstawowe funkcje włączane
