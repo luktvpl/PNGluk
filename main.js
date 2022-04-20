@@ -243,27 +243,31 @@ function setstate(statedate){
     ASon = new Image();
     fetch(statedate["on"], {referrer:""})
     ASon.setAttribute('crossOrigin', 'anonymous');
+    ASon.onload = function () {
+        recalcdata();
+    }
     ASom = new Image();
     fetch(statedate["om"], {referrer:""})
     ASom.setAttribute('crossOrigin', 'anonymous');
+    ASom.onload = function () {
+        recalcdata();
+    }
     ASzn = new Image();
     fetch(statedate["zn"], {referrer:""})
     ASzn.setAttribute('crossOrigin', 'anonymous');
+    ASzn.onload = function () {
+        recalcdata();
+    }
     ASzm = new Image();
     fetch(statedate["zm"], {referrer:""})
     ASzm.setAttribute('crossOrigin', 'anonymous');
+    ASzm.onload = function () {
+        recalcdata();
+    }
     ASon.src = statedate["on"];
     ASom.src = statedate["om"];
     ASzn.src = statedate["zn"];
     ASzm.src = statedate["zm"];
-    setTimeout(function(){recalcdata()}, 10);
-    setTimeout(function(){recalcdata()}, 100);
-    setTimeout(function(){recalcdata()}, 200);
-    setTimeout(function(){recalcdata()}, 500);
-    setTimeout(function(){recalcdata()}, 1000);
-    setTimeout(function(){recalcdata()}, 1500);
-    setTimeout(function(){recalcdata()}, 2000);
-    recalcdata()
 }
 
 
