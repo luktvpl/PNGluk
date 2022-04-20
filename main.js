@@ -256,6 +256,7 @@ function setstate(statedate){
     ASom.src = statedate["om"];
     ASzn.src = statedate["zn"];
     ASzm.src = statedate["zm"];
+    setTimeout(function(){recalcdata()}, 2000);
     recalcdata()
 }
 
