@@ -256,6 +256,12 @@ function setstate(statedate){
     ASom.src = statedate["om"];
     ASzn.src = statedate["zn"];
     ASzm.src = statedate["zm"];
+    setTimeout(function(){recalcdata()}, 10);
+    setTimeout(function(){recalcdata()}, 100);
+    setTimeout(function(){recalcdata()}, 200);
+    setTimeout(function(){recalcdata()}, 500);
+    setTimeout(function(){recalcdata()}, 1000);
+    setTimeout(function(){recalcdata()}, 1500);
     setTimeout(function(){recalcdata()}, 2000);
     recalcdata()
 }
@@ -790,8 +796,8 @@ function funkcjiie(funct) {
             setstate(save["s"+save.s])
             saveSave()
         break;
-        case "s7":
-            save.s = 7
+        case "s8":
+            save.s = 8
             tmps = save.s-1
             setstate(save["s"+save.s])
             saveSave()
