@@ -256,7 +256,7 @@ function setstate(statedate){
     ASom.src = statedate["om"];
     ASzn.src = statedate["zn"];
     ASzm.src = statedate["zm"];
-
+    recalcdata()
 }
 
 
@@ -594,7 +594,16 @@ function tap(x,y){
     clog(x+"+"+y);
     switch (screen) {
         case "main":
-            checktouch(RenderData.ui_button_hide,x,y);
+            checktouch(RenderData.ui_button_hide,x,y)
+            checktouch(RenderData.state0,x,y)
+            checktouch(RenderData.ss1,x,y)
+            checktouch(RenderData.ss2,x,y)
+            checktouch(RenderData.ss3,x,y)
+            checktouch(RenderData.ss4,x,y)
+            checktouch(RenderData.ss5,x,y)
+            checktouch(RenderData.ss6,x,y)
+            checktouch(RenderData.ss7,x,y)
+            checktouch(RenderData.ss8,x,y)
         break;
         case "main_and_ui" :
             checktouch(RenderData.ui_button_hide,x,y);
@@ -740,6 +749,48 @@ function funkcjiie(funct) {
         break
         case "s1":
             save.s = 1
+            tmps = save.s-1
+            setstate(save["s"+save.s])
+            saveSave()
+        break;
+        case "s2":
+            save.s = 2
+            tmps = save.s-1
+            setstate(save["s"+save.s])
+            saveSave()
+        break;
+        case "s3":
+            save.s = 3
+            tmps = save.s-1
+            setstate(save["s"+save.s])
+            saveSave()
+        break;
+        case "s4":
+            save.s = 4
+            tmps = save.s-1
+            setstate(save["s"+save.s])
+            saveSave()
+        break;
+        case "s5":
+            save.s = 5
+            tmps = save.s-1
+            setstate(save["s"+save.s])
+            saveSave()
+        break;
+        case "s6":
+            save.s = 6
+            tmps = save.s-1
+            setstate(save["s"+save.s])
+            saveSave()
+        break;
+        case "s7":
+            save.s = 7
+            tmps = save.s-1
+            setstate(save["s"+save.s])
+            saveSave()
+        break;
+        case "s7":
+            save.s = 7
             tmps = save.s-1
             setstate(save["s"+save.s])
             saveSave()
