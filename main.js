@@ -180,7 +180,7 @@ function LoadUI() {
         c.fillText('wczytywanie assetów', 10, 50);
         LoadingState.main = "wczytywanie assetów"
         try {
-            var location = "https://luktvpl.github.io/PNGluk/ui/"+asset+".png"
+            var location = "./ui/"+asset+".png"
             
             var ass = new Image;
             fetch(location, {referrer:""})
@@ -956,10 +956,10 @@ try{
             
         }else{
             var ds ={
-                on: "https://luktvpl.github.io/PNGluk/demo/on.png",
-                om: "https://luktvpl.github.io/PNGluk/demo/om.png",
-                zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
-                zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
+                on: "./demo/on.png",
+                om: "./demo/om.png",
+                zn: "./demo/zn.png",
+                zm: "./demo/zm.png"
             }
             save = {
                 s1 : ds,
@@ -985,10 +985,10 @@ try{
         } 
         } catch {
             setstate({
-                    on: "https://luktvpl.github.io/PNGluk/demo/on.png",
-                    om: "https://luktvpl.github.io/PNGluk/demo/om.png",
-                    zn: "https://luktvpl.github.io/PNGluk/demo/zn.png",
-                    zm: "https://luktvpl.github.io/PNGluk/demo/zm.png"
+                    on: "./demo/on.png",
+                    om: "./demo/om.png",
+                    zn: "./demo/zn.png",
+                    zm: "./demo/zm.png"
                 });
             
             tryfixsave()
