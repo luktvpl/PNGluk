@@ -515,7 +515,7 @@ function recalcdata(){
         m1:fixtemp1,
         m2:fixtemp2,
         m3:fixtemp3,
-        m4:RenderData.state_select.dy,
+        m4:RenderData.state_select.y,
         m5:window.innerHeight
     }
     //touch change
