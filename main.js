@@ -56,7 +56,7 @@ var LoadingState = {
     details:""
 }
 var screen = "loading"
-var tło ={
+var tlo ={
     AS:0,
     colors:['#ff00ff','#0033cc','#00ff00'],
     names:["pink","blue","green"]
@@ -168,13 +168,13 @@ var AssetsList = [
 
 function LoadUI() {
     start();
-    c.fillStyle = tło.colors[tło.AS];
+    c.fillStyle = tlo.colors[tlo.AS];
     c.fillRect(0, 0, window.innerWidth, window.innerHeight);
     c.font = '48px serif';
     c.fillText('wczytywanie assetów', 10, 50);
 
     AssetsList.forEach(asset => {
-        c.fillStyle = tło.colors[tło.AS];
+        c.fillStyle = tlo.colors[tlo.AS];
         c.fillRect(0, 0, window.innerWidth, window.innerHeight);
         c.font = '48px minecraft';
         c.fillText('wczytywanie assetów', 10, 50);
@@ -290,19 +290,19 @@ RenderData.text = 40;
 //renderowanie
 function render(){
     try {
-        //c.drawImage(tło.sksjl,0,0,0,0)
+        //c.drawImage(tlo.sksjl,0,0,0,0)
         c.font = RenderData.text+'px minecraft';
     switch (screen) {
         
         case "main":
             
-            c.fillStyle = tło.colors[tło.AS];
+            c.fillStyle = tlo.colors[tlo.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);//
 
             break;
         case "main_and_ui":
-            c.fillStyle = tło.colors[tło.AS];
+            c.fillStyle = tlo.colors[tlo.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
             //reszta ui
@@ -318,11 +318,11 @@ function render(){
             c.fillText("hej",0,50)*/
             break;
         case "options":
-            c.fillStyle = tło.colors[tło.AS];
+            c.fillStyle = tlo.colors[tlo.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.drawImage(assety.ui_button_back,RenderData.ui_button_back.x,RenderData.ui_button_back.y,RenderData.ui_button_back.dx,RenderData.ui_button_back.dy)
             c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y,RenderData.state_select.dx,RenderData.state_select.dy)
-            c.drawImage(assety["screen_"+tło.names[tło.AS]],RenderData.screen_blue.x,RenderData.screen_blue.y,RenderData.screen_blue.dx,RenderData.screen_blue.dy)
+            c.drawImage(assety["screen_"+tlo.names[tlo.AS]],RenderData.screen_blue.x,RenderData.screen_blue.y,RenderData.screen_blue.dx,RenderData.screen_blue.dy)
             c.drawImage(assety.ui_button_p10,RenderData.ui_button_p10.x,RenderData.ui_button_p10.y,RenderData.ui_button_p10.dx,RenderData.ui_button_p10.dy)
             c.drawImage(assety.ui_button_p1,RenderData.ui_button_p1.x,RenderData.ui_button_p1.y,RenderData.ui_button_p1.dx,RenderData.ui_button_p1.dy)
             c.drawImage(assety.ui_button_m10,RenderData.ui_button_m10.x,RenderData.ui_button_m10.y,RenderData.ui_button_m10.dx,RenderData.ui_button_m10.dy)
@@ -336,14 +336,14 @@ function render(){
             
             break;
         case "loading":
-            c.fillStyle = tło.colors[tło.AS];
+            c.fillStyle = tlo.colors[tlo.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight)
             c.fillStyle = 'black';
             c.fillText(LoadingState.main,0,25)
             c.fillText(LoadingState.details,0,50)
             break
         case "experimental" :
-            c.fillStyle = tło.colors[tło.AS];
+            c.fillStyle = tlo.colors[tlo.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
             c.drawImage(assety.ui_button_back,RenderData.ui_button_back.x,RenderData.ui_button_back.y,RenderData.ui_button_back.dx,RenderData.ui_button_back.dy)
         break
@@ -722,20 +722,20 @@ function funkcjiie(funct) {
             diveł.innerHTML = "";
         break
         case "nbg":
-            switch (tło.AS) {
+            switch (tlo.AS) {
                 case 0:
-                    tło.AS=1
+                    tlo.AS=1
                 break;
                 case 1:
-                    tło.AS=2
+                    tlo.AS=2
                 break;
                 case 2:
-                    tło.AS=0
+                    tlo.AS=0
                 break;
             }
-            save.tło = tło.AS
+            save.tlo = tlo.AS
             saveSave();
-            clog(tło.AS)
+            clog(tlo.AS)
             clog("ok")
         break
         case "p10":
@@ -949,7 +949,7 @@ try{
         if(cc.set == true) {
             save = cc
             console.log("ok")
-            tło.AS = save.tło
+            tlo.AS = save.tlo
             MocM = save.moc
             setstate(save["s"+save.s]);
             recalcdata()
@@ -972,12 +972,12 @@ try{
                 s8 : ds,
             p:1,
             s:1,
-            tło:0,
+            tlo:0,
             moc:25,
             set: true
             }
             MocM = save.moc
-            tło.AS = save.tło
+            tlo.AS = save.tlo
             setstate(save["s1"]);
             saveSave()
             recalcdata()
