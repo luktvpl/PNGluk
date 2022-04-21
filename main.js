@@ -1,4 +1,5 @@
 
+var imgimp = '<label for="omf"         ><img           src="/ui/state_image_om.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  40%;           " /></label       ><input         id="omf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="onf"         ><img           src="/ui/state_image_on.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  50%;           " /></label       ><input         id="onf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="zmf"         ><img           src="/ui/state_image_zm.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  60%;           "/></label       ><input         id="zmf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="znf"         ><img           src="/ui/state_image_zn.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  70%;           " /></label       ><input         id="znf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       />'
 var screen = document.getElementById("c");
 var save;
 var diveł = document.getElementById("diveł");
@@ -955,21 +956,56 @@ try{
             recalcdata()
             
         }else{
-            var ds ={
-                on: "/demo/on.png",
-                om: "/demo/om.png",
-                zn: "/demo/zn.png",
-                zm: "/demo/zm.png"
-            }
+            alert("nowysave")
             save = {
-                s1 : ds,
-                s2 : ds,
-                s3 : ds,
-                s4 : ds,
-                s5 : ds,
-                s6 : ds,
-                s7 : ds,
-                s8 : ds,
+                s1 : {
+                    on: "/demo/on.png",
+                    om: "/demo/om.png",
+                    zn: "/demo/zn.png",
+                    zm: "/demo/zm.png"
+                },
+                s2 : {
+                    on: "/demo/on.png",
+                    om: "/demo/om.png",
+                    zn: "/demo/zn.png",
+                    zm: "/demo/zm.png"
+                },
+                s3 : {
+                    on: "/demo/on.png",
+                    om: "/demo/om.png",
+                    zn: "/demo/zn.png",
+                    zm: "/demo/zm.png"
+                },
+                s4 : {
+                    on: "/demo/on.png",
+                    om: "/demo/om.png",
+                    zn: "/demo/zn.png",
+                    zm: "/demo/zm.png"
+                },
+                s5 : {
+                    on: "/demo/on.png",
+                    om: "/demo/om.png",
+                    zn: "/demo/zn.png",
+                    zm: "/demo/zm.png"
+                },
+                s6 : {
+                    on: "/demo/on.png",
+                    om: "/demo/om.png",
+                    zn: "/demo/zn.png",
+                    zm: "/demo/zm.png"
+                },
+                s7 : {
+                    on: "/demo/on.png",
+                    om: "/demo/om.png",
+                    zn: "/demo/zn.png",
+                    zm: "/demo/zm.png"
+                },
+                s8 : {
+                    on: "/demo/on.png",
+                    om: "/demo/om.png",
+                    zn: "/demo/zn.png",
+                    zm: "/demo/zm.png"
+                },
             p:1,
             s:1,
             tlo:0,
@@ -984,6 +1020,7 @@ try{
             
         } 
         } catch {
+            alert("err")
             setstate({
                     on: "/demo/on.png",
                     om: "/demo/om.png",
@@ -1120,7 +1157,7 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
 //btoa() string to base64
 //atob() base64 to string
 //zmienna
-var imgimp = '<label for="omf"         ><img           src="/ui/state_image_om.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  40%;           " /></label       ><input         id="omf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="onf"         ><img           src="/ui/state_image_on.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  50%;           " /></label       ><input         id="onf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="zmf"         ><img           src="/ui/state_image_zm.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  60%;           "/></label       ><input         id="zmf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       /> <label for="znf"         ><img           src="/ui/state_image_zn.png"           style="             position: fixed;             width: 10%;             height: 10%;             z-index: 2;             top:  50%;             left:  70%;           " /></label       ><input         id="znf"         type="file"         style="position: fixed; z-index: 1;" 	   accept="image/png"       />'
+
 
 function wyslij(imgurl) {
 fetch(
