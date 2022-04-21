@@ -673,6 +673,8 @@ function funkcjiie(funct) {
         case "options" :
             screen="options"
             diveł.innerHTML = imgimp;
+            document.getElementById("sss").innerHTML = 'save <input type="text" id="saveload" /><button style="z-index: 3;position: fixed;top: 80%;font-family: minecraft;font-size: large;" onclick="setsave()">wczytaj</button>'
+            document.getElementById("saveload").value = btoa(JSON.stringify(save));
             var tempp = ["on","om","zm","zn"]
             tempp.forEach(el => {
                 console.log(el)
@@ -721,6 +723,7 @@ function funkcjiie(funct) {
         case "back":
             screen="main_and_ui"
             diveł.innerHTML = "";
+            document.getElementById("sss").innerHTML = ""
         break
         case "nbg":
             switch (tlo.AS) {
@@ -1034,6 +1037,11 @@ try{
         
         
         }
+    function setsave() {
+        save = JSON.parse(atob(document.getElementById("saveload").value))
+        saveSave()
+        window.location.reload(true)
+    }
     function tryfixsave() {
         var temppppp = {
             set: false
