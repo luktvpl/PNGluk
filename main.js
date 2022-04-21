@@ -1061,6 +1061,12 @@ try{
         window.location.reload(true)
     }
     function saveSave() {
+        try{
+         document.getElementById("saveload").value = btoa(JSON.stringify(save));   
+        }catch{
+            
+        }
+        
         const d = new Date();
         d.setTime(d.getTime() + (360*24*60*60*1000));
         let expires = "expires="+ d.toUTCString();
