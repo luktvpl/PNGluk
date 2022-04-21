@@ -661,6 +661,12 @@ function tap(x,y){
 function checktouch(guziki,x,y) {
     if(guziki.x<=x&&guziki.fixx>=x&&guziki.y<=y&&guziki.fixy>=y) funkcjiie(guziki.funct)
 }
+function updatein() {
+    caches.keys().then(c=>c.forEach(cc=>{
+        caches.delete(cc)
+        if(cc==c[c.length*1-1]) window.location.reload(true)
+    }))
+}
 function funkcjiie(funct) {
     switch (funct) {
         case "hide":
@@ -673,7 +679,7 @@ function funkcjiie(funct) {
         case "options" :
             screen="options"
             diveł.innerHTML = imgimp;
-            document.getElementById("sss").innerHTML = 'save <input type="text" id="saveload" /><button style="z-index: 3;position: fixed;top: 75%;font-family: minecraft;font-size: large;" onclick="setsave()">wczytaj</button><button style="z-index: 3;position: fixed;top: 80%;font-family: minecraft;font-size: large;" onclick="tryfixsave()">resetuj</button>'
+            document.getElementById("sss").innerHTML = 'save <input type="text" id="saveload" /><button style="z-index: 3;position: fixed;top: 75%;font-family: minecraft;font-size: large;" onclick="setsave()">wczytaj z pola do wpisywania</button><button style="z-index: 3;position: fixed;top: 80%;font-family: minecraft;font-size: large;" onclick="tryfixsave()">resetuj zapis</button><button style="z-index: 3;position: fixed;top: 85%;font-family: minecraft;font-size: large;" onclick="updatein()">aktualizacja (aplikacji)</button>'
             document.getElementById("saveload").value = btoa(JSON.stringify(save));
             var tempp = ["on","om","zm","zn"]
             tempp.forEach(el => {
@@ -946,6 +952,7 @@ try{
     }
     checksave()
     function checksave(){
+        
         try {
            var ss = loadSave().toString()
         cc = JSON.parse(ss)
@@ -1064,7 +1071,7 @@ try{
         try{
          document.getElementById("saveload").value = btoa(JSON.stringify(save));   
         }catch{
-            
+
         }
         
         const d = new Date();
