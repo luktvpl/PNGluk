@@ -673,7 +673,7 @@ function funkcjiie(funct) {
         case "options" :
             screen="options"
             diveł.innerHTML = imgimp;
-            document.getElementById("sss").innerHTML = 'save <input type="text" id="saveload" /><button style="z-index: 3;position: fixed;top: 80%;font-family: minecraft;font-size: large;" onclick="setsave()">wczytaj</button>'
+            document.getElementById("sss").innerHTML = 'save <input type="text" id="saveload" /><button style="z-index: 3;position: fixed;top: 75%;font-family: minecraft;font-size: large;" onclick="setsave()">wczytaj</button><button style="z-index: 3;position: fixed;top: 80%;font-family: minecraft;font-size: large;" onclick="tryfixsave()">resetuj</button>'
             document.getElementById("saveload").value = btoa(JSON.stringify(save));
             var tempp = ["on","om","zm","zn"]
             tempp.forEach(el => {
@@ -1038,9 +1038,17 @@ try{
         
         }
     function setsave() {
+        try {
         save = JSON.parse(atob(document.getElementById("saveload").value))
+        tlo.AS = save.tlo
+        MocM = save.moc
+        setstate(save["s"+save.s]);
         saveSave()
-        window.location.reload(true)
+        window.location.reload(true) 
+        } catch{
+            alert("błąd wczytywania")
+        }
+        
     }
     function tryfixsave() {
         var temppppp = {
