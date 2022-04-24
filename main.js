@@ -980,58 +980,58 @@ try{
             alert("nowysave")
             save = {
                 s1 : {
-                    on: "/demo/on.png",
-                    om: "/demo/om.png",
-                    zn: "/demo/zn.png",
-                    zm: "/demo/zm.png"
+                    on: "/demo/normal/on.png",
+                    om: "/demo/normal/om.png",
+                    zn: "/demo/normal/zn.png",
+                    zm: "/demo/normal/zm.png"
                 },
                 s2 : {
-                    on: "/demo/on.png",
-                    om: "/demo/om.png",
-                    zn: "/demo/zn.png",
-                    zm: "/demo/zm.png"
+                    on: "/demo/really/on.png",
+                    om: "/demo/really/om.png",
+                    zn: "/demo/really/zn.png",
+                    zm: "/demo/really/zm.png"
                 },
                 s3 : {
-                    on: "/demo/on.png",
-                    om: "/demo/om.png",
-                    zn: "/demo/zn.png",
-                    zm: "/demo/zm.png"
+                    on: "/demo/sad/on.png",
+                    om: "/demo/sad/om.png",
+                    zn: "/demo/sad/zn.png",
+                    zm: "/demo/sad/zm.png"
                 },
                 s4 : {
-                    on: "/demo/on.png",
-                    om: "/demo/om.png",
-                    zn: "/demo/zn.png",
-                    zm: "/demo/zm.png"
+                    on: "/demo/angry/on.png",
+                    om: "/demo/angry/om.png",
+                    zn: "/demo/angry/zn.png",
+                    zm: "/demo/angry/zm.png"
                 },
                 s5 : {
-                    on: "/demo/on.png",
-                    om: "/demo/om.png",
-                    zn: "/demo/zn.png",
-                    zm: "/demo/zm.png"
+                    on: "/demo/gentelmen/on.png",
+                    om: "/demo/gentelmen/om.png",
+                    zn: "/demo/gentelmen/zn.png",
+                    zm: "/demo/gentelmen/zm.png"
                 },
                 s6 : {
-                    on: "/demo/on.png",
-                    om: "/demo/om.png",
-                    zn: "/demo/zn.png",
-                    zm: "/demo/zm.png"
+                    on: "/demo/cringe/on.png",
+                    om: "/demo/cringe/om.png",
+                    zn: "/demo/cringe/zn.png",
+                    zm: "/demo/cringe/zm.png"
                 },
                 s7 : {
-                    on: "/demo/on.png",
-                    om: "/demo/om.png",
-                    zn: "/demo/zn.png",
-                    zm: "/demo/zm.png"
+                    on: "/demo/sweet/on.png",
+                    om: "/demo/sweet/om.png",
+                    zn: "/demo/sweet/zn.png",
+                    zm: "/demo/sweet/zm.png"
                 },
                 s8 : {
-                    on: "/demo/on.png",
-                    om: "/demo/om.png",
-                    zn: "/demo/zn.png",
-                    zm: "/demo/zm.png"
+                    on: "/demo/foh/on.png",
+                    om: "/demo/foh/om.png",
+                    zn: "/demo/foh/zn.png",
+                    zm: "/demo/foh/zm.png"
                 },
             p:1,
             s:1,
             tlo:0,
             moc:25,
-            screen:"",
+            screen:"main_and_ui",
             set: true
             }
             screen = "main_and_ui";
