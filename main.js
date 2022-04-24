@@ -971,6 +971,8 @@ try{
             tlo.AS = save.tlo
             MocM = save.moc
             if(save.screen!=undefined) screen = save.screen;
+            else screen = main_and_ui
+            saveSave()
             setstate(save["s"+save.s]);
             recalcdata()
             
