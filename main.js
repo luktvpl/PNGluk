@@ -670,7 +670,14 @@ function updatein() {
 function funkcjiie(funct) {
     switch (funct) {
         case "hide":
-            if(screen=="main") screen="main_and_ui";else screen = "main"
+            if(screen=="main") {
+                screen="main_and_ui";
+                
+            }else {
+                screen = "main"
+            }
+            save["screen"]= screen
+            saveSave()
         break
         case "cp":
             save.p +=1
@@ -727,6 +734,7 @@ function funkcjiie(funct) {
             }
         break
         case "back":
+            
             screen="main_and_ui"
             diveł.innerHTML = "";
             document.getElementById("sss").innerHTML = ""
@@ -962,6 +970,7 @@ try{
             console.log("ok")
             tlo.AS = save.tlo
             MocM = save.moc
+            if(save.screen!=undefined) screen = save.screen;
             setstate(save["s"+save.s]);
             recalcdata()
             
@@ -1020,6 +1029,7 @@ try{
             s:1,
             tlo:0,
             moc:25,
+            screen:"",
             set: true
             }
             MocM = save.moc
