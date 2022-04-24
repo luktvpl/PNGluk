@@ -198,7 +198,7 @@ function LoadUI() {
         }
         setTimeout(() => {
            if (asset == AssetsList[AssetsList.length*1-1]){
-                screen = "main_and_ui";
+                
                 recalcdata()
             } 
         }, 100);
@@ -1032,6 +1032,7 @@ try{
             screen:"",
             set: true
             }
+            screen = "main_and_ui";
             MocM = save.moc
             tlo.AS = save.tlo
             setstate(save["s1"]);
