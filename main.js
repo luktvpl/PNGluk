@@ -200,6 +200,7 @@ function LoadUI() {
            if (asset == AssetsList[AssetsList.length*1-1]){
                 
                 recalcdata()
+                setstate
             } 
         }, 100);
            
@@ -234,36 +235,101 @@ var ASscene={
 }
 
   
-
+var stateloadp = 0
     //AS-aktualny stan
+    var staty = {
+        
+            s1 : {
+                on: "",
+                om: "",
+                zn: "",
+                zm: ""
+            },
+            s2 : {
+                on: "",
+                om: "",
+                zn: "",
+                zm: ""
+            },
+            s3 : {
+                on: "",
+                om: "",
+                zn: "",
+                zm: ""
+            },
+            s4 : {
+                on: "",
+                om: "",
+                zn: "",
+                zm: ""
+            },
+            s5 : {
+                on: "",
+                om: "",
+                zn: "",
+                zm: ""
+            },
+            s6 : {
+                on: "",
+                om: "",
+                zn: "",
+                zm: ""
+            },
+            s7 : {
+                on: "",
+                om: "",
+                zn: "",
+                zm: ""
+            },
+            s8 : {
+                on: "",
+                om: "",
+                zn: "",
+                zm: ""
+            }
+
+    }
+function setstate(statedate,num){
     var ASon = new Image();
-    var ASom = new Image();
-    var ASzn = new Image();
-    var ASzm = new Image();
-function setstate(statedate){
-    ASon = new Image();
     fetch(statedate["on"], {referrer:""})
     ASon.setAttribute('crossOrigin', 'anonymous');
     ASon.onload = function () {
+        staty["s"+num].on = this
+        LoadingState.details = "wcztano : "+this.src;
         recalcdata();
+        stateloadp++
+        
     }
-    ASom = new Image();
+    var ASom = new Image();
     fetch(statedate["om"], {referrer:""})
     ASom.setAttribute('crossOrigin', 'anonymous');
     ASom.onload = function () {
         recalcdata();
+        staty["s"+num].om = this
+        LoadingState.details = "wcztano : "+this.src;
+        recalcdata();
+        stateloadp++
     }
-    ASzn = new Image();
+    var ASzn = new Image();
     fetch(statedate["zn"], {referrer:""})
     ASzn.setAttribute('crossOrigin', 'anonymous');
     ASzn.onload = function () {
         recalcdata();
+        staty["s"+num].zn = this
+        LoadingState.details = "wcztano : "+this.src;
+        recalcdata();
+        stateloadp++
     }
-    ASzm = new Image();
+    var ASzm = new Image();
     fetch(statedate["zm"], {referrer:""})
     ASzm.setAttribute('crossOrigin', 'anonymous');
     ASzm.onload = function () {
         recalcdata();
+        staty["s"+num].zm = this
+        LoadingState.details = "wcztano : "+this.src;
+
+        recalcdata();
+        stateloadp++
     }
     ASon.src = statedate["on"];
     ASom.src = statedate["om"];
@@ -291,7 +357,7 @@ RenderData.text = 40;
 //renderowanie
 function render(){
     try {
-        //c.drawImage(tlo.sksjl,0,0,0,0)
+        if(stateloadp<32)c.drawImage(tlo.sksjl,0,0,0,0)
         c.font = RenderData.text+'px minecraft';
     switch (screen) {
         
@@ -299,13 +365,13 @@ function render(){
             
             c.fillStyle = tlo.colors[tlo.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-            c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);//
+            c.drawImage(staty["s"+save.s][mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);//
 
             break;
         case "main_and_ui":
             c.fillStyle = tlo.colors[tlo.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-            c.drawImage(window["AS"+mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
+            c.drawImage(staty["s"+save.s][mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
             //reszta ui
             c.drawImage(assety.ui_button_hide,RenderData.ui_button_hide.x,RenderData.ui_button_hide.y,RenderData.ui_button_hide.dx,RenderData.ui_button_hide.dy)
             c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y,RenderData.state_select.dx,RenderData.state_select.dy)
@@ -349,18 +415,20 @@ function render(){
             c.drawImage(assety.ui_button_back,RenderData.ui_button_back.x,RenderData.ui_button_back.y,RenderData.ui_button_back.dx,RenderData.ui_button_back.dy)
         break
         default:
-            clog("Render Error")
-            c.fillStyle = 'blue';
-            c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            c.fillStyle = tlo.colors[tlo.AS];
+            c.fillRect(0, 0, window.innerWidth, window.innerHeight)
             c.fillStyle = 'black';
-            c.fillText("Render Error",4,25)
+            c.fillText(LoadingState.main,0,25)
+            c.fillText(LoadingState.details,0,50)
             break;
     }    
     } catch {
-      c.fillStyle = 'blue';
-      c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-      c.fillStyle = 'black';
-      c.fillText("Render Error",4,25)
+        c.font = RenderData.text+'px minecraft';
+        c.fillStyle = tlo.colors[tlo.AS];
+        c.fillRect(0, 0, window.innerWidth, window.innerHeight)
+        c.fillStyle = 'black';
+        c.fillText(LoadingState.main,0,25)
+        c.fillText(LoadingState.details,0,50)
     } 
         /*c.font = '48px serif';
         c.fillText('wczytywanie assetów', 10, 300);*/
@@ -372,8 +440,8 @@ function recalcdata(){
     try {
      var w=window.innerWidth;
     var h=window.innerHeight;
-    var Iw=ASzn.width;
-    var Ih=ASzn.height;
+    var Iw=staty.s1.on.width;
+    var Ih=staty.s1.on.height;
     if(w>h){
         var hh = h-100;
         var size = h/Ih;
@@ -713,7 +781,7 @@ function funkcjiie(funct) {
                           save["s"+save.s][el] = data.data.link
                           saveSave()
                           
-                          setstate(save["s"+save.s]);
+                          setstate(save["s"+save.s],save.s);
                           recalcdata()
 
                       })
@@ -779,49 +847,49 @@ function funkcjiie(funct) {
         case "s1":
             save.s = 1
             tmps = save.s-1
-            setstate(save["s"+save.s])
+            setstate(save["s"+save.s],save.s)
             saveSave()
         break;
         case "s2":
             save.s = 2
             tmps = save.s-1
-            setstate(save["s"+save.s])
+            setstate(save["s"+save.s],save.s)
             saveSave()
         break;
         case "s3":
             save.s = 3
             tmps = save.s-1
-            setstate(save["s"+save.s])
+            setstate(save["s"+save.s],save.s)
             saveSave()
         break;
         case "s4":
             save.s = 4
             tmps = save.s-1
-            setstate(save["s"+save.s])
+            setstate(save["s"+save.s],save.s)
             saveSave()
         break;
         case "s5":
             save.s = 5
             tmps = save.s-1
-            setstate(save["s"+save.s])
+            setstate(save["s"+save.s],save.s)
             saveSave()
         break;
         case "s6":
             save.s = 6
             tmps = save.s-1
-            setstate(save["s"+save.s])
+            setstate(save["s"+save.s],save.s)
             saveSave()
         break;
         case "s7":
             save.s = 7
             tmps = save.s-1
-            setstate(save["s"+save.s])
+            setstate(save["s"+save.s],save.s)
             saveSave()
         break;
         case "s8":
             save.s = 8
             tmps = save.s-1
-            setstate(save["s"+save.s])
+            setstate(save["s"+save.s],save.s)
             saveSave()
         break;
     }
@@ -973,7 +1041,15 @@ try{
             if(save.screen!=undefined) screen = save.screen;
             else screen = main_and_ui
             saveSave()
-            setstate(save["s"+save.s]);
+            setstate(save.s1,1)
+            setstate(save.s2,2)
+            setstate(save.s2,3)
+            setstate(save.s3,4)
+            setstate(save.s4,4)
+            setstate(save.s5,5)
+            setstate(save.s6,5)
+            setstate(save.s7,7)
+            setstate(save.s8,8)
             recalcdata()
             
         }else{
@@ -1027,6 +1103,7 @@ try{
                     zn: "/demo/foh/zn.png",
                     zm: "/demo/foh/zm.png"
                 },
+            
             p:1,
             s:1,
             tlo:0,
@@ -1034,10 +1111,18 @@ try{
             screen:"main_and_ui",
             set: true
             }
+            setstate(save.s1,1)
+            setstate(save.s2,2)
+            setstate(save.s2,3)
+            setstate(save.s3,4)
+            setstate(save.s4,4)
+            setstate(save.s5,5)
+            setstate(save.s6,5)
+            setstate(save.s7,7)
+            setstate(save.s8,8)
             screen = "main_and_ui";
             MocM = save.moc
             tlo.AS = save.tlo
-            setstate(save["s1"]);
             saveSave()
             recalcdata()
             
@@ -1049,8 +1134,8 @@ try{
                     om: "/demo/om.png",
                     zn: "/demo/zn.png",
                     zm: "/demo/zm.png"
-                });
-            
+                },0);
+            stateloadp = 32
             tryfixsave()
             recalcdata()
         }
@@ -1062,7 +1147,7 @@ try{
         save = JSON.parse(atob(document.getElementById("saveload").value))
         tlo.AS = save.tlo
         MocM = save.moc
-        setstate(save["s"+save.s]);
+        setstate(save["s"+save.s],save.s);
         saveSave()
         window.location.reload(true) 
         } catch{
