@@ -357,7 +357,6 @@ RenderData.text = 40;
 //renderowanie
 function render(){
     try {
-        if(stateloadp<32)c.drawImage(tlo.sksjl,0,0,0,0)
         c.font = RenderData.text+'px minecraft';
     switch (screen) {
         
