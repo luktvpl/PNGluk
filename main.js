@@ -115,6 +115,8 @@ var assety = {
     state1:"",
     state2:"",
     state3:"",
+    state4:"",
+    state5:"",
 }
 //lista asstetów (ui)
 var AssetsList = [
@@ -122,6 +124,8 @@ var AssetsList = [
     "state1",
     "state2",
     "state3",
+    "state4",
+    "state5",
     "screen_blue",
     "recfalse",
     "rectrue",
@@ -364,13 +368,13 @@ function render(){
             
             c.fillStyle = tlo.colors[tlo.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-            c.drawImage(staty["s"+save.s][mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);//
+            c.drawImage(staty["s"+save.s][mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx,RenderData.doll.dy);//
 
             break;
         case "main_and_ui":
             c.fillStyle = tlo.colors[tlo.AS];
             c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-            c.drawImage(staty["s"+save.s][mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx+x,RenderData.doll.dy+y);
+            c.drawImage(staty["s"+save.s][mówi+mruga],RenderData.doll.x+x,RenderData.doll.y+y,RenderData.doll.dx,RenderData.doll.dy);
             //reszta ui
             c.drawImage(assety.ui_button_hide,RenderData.ui_button_hide.x,RenderData.ui_button_hide.y,RenderData.ui_button_hide.dx,RenderData.ui_button_hide.dy)
             c.drawImage(assety.state_select,RenderData.state_select.x,RenderData.state_select.y,RenderData.state_select.dx,RenderData.state_select.dy)
@@ -907,7 +911,9 @@ setInterval(chceck,100)
 //podkoni (fizyka)
 var sila= 0;
 var zwrot = 1;
-pvariants = ["set","set","set","set"]
+var jumpst = 0;
+pvariants = ["set","set","set","set","set","set"]
+var dattta =[]
 function phisic(){
     switch (save.p) {
         case 0:
@@ -980,6 +986,74 @@ function phisic(){
                 y-=sila;
             }
             if(phisicDebuge)clog("y:"+y+" sile:"+sila)
+        break;
+        case 4:
+            if(mówi=="o"){
+        dattta.push(x+":"+y)
+        if(jumpst<7){
+            y-=2
+            x+=3
+        } else if(jumpst<13){
+            y+=2
+            x+=3
+        }else if(jumpst<19){
+            y-=2
+            x-=3
+        }else if(jumpst<25){
+            y+=2
+            x-=3
+            if(jumpst==24){
+                x=0
+                y=0
+                jumpst=0
+                clog(dattta)
+                dattta =[]
+            }
+        } else  {
+                x=0
+                y=0
+                jumpst=0
+                clog(dattta)
+                dattta =[]
+        }
+          jumpst++
+        }else{
+            x=0
+                y=0
+                jumpst=0
+                clog(dattta)
+                dattta =[]
+        }
+         
+            
+        
+        
+        break;
+        case 5:
+            dattta.push(x+":"+y)
+            if(jumpst<7){
+                y-=2
+                x+=3
+            } else if(jumpst<13){
+                y+=2
+                x+=3
+            }else if(jumpst<19){
+                y-=2
+                x-=3
+            }else if(jumpst<25){
+                y+=2
+                x-=3
+                if(jumpst==24){
+                    x=0
+                    y=0
+                    jumpst=0
+                    clog(dattta)
+                    dattta =[]
+                }
+            } else {
+                
+            }
+            jumpst++
         break;
         default:
             save.p = 0
@@ -1232,7 +1306,9 @@ function startrec() {
 
 
 var rec = "false";
-navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+gmic()
+function gmic() {
+   navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     //start rec
     AudioStream = stream;
     //głośność mikrofonu
@@ -1269,7 +1345,9 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
       /* handle the error */
       console.log(err)
   });
-  //rec
+  //rec 
+}
+
   
   //funkcjie pomocnicze
   function getRandomInt(min, max) {
