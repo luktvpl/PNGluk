@@ -1003,14 +1003,14 @@ function phisic(){
             y+=2
             x-=3
             if(jumpst==24){
-                x=0
+                x=-36
                 y=0
                 jumpst=0
                 clog(dattta)
                 dattta =[]
             }
         } else  {
-                x=0
+                x=-36
                 y=0
                 jumpst=0
                 clog(dattta)
@@ -1018,7 +1018,7 @@ function phisic(){
         }
           jumpst++
         }else{
-            x=0
+                x=-36
                 y=0
                 jumpst=0
                 clog(dattta)
@@ -1044,14 +1044,14 @@ function phisic(){
                 y+=2
                 x-=3
                 if(jumpst==24){
-                    x=0
+                    x=-36
                     y=0
                     jumpst=0
                     clog(dattta)
                     dattta =[]
                 }
             } else {
-                
+                x=-36
             }
             jumpst++
         break;
@@ -1306,6 +1306,7 @@ function startrec() {
 
 
 var rec = "false";
+var twt = 0;
 gmic()
 function gmic() {
    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
@@ -1335,10 +1336,14 @@ function gmic() {
         loudness = Math.round(average)
         if(micDebug)clog(loudness);
         if (loudness>MocM){
-            mówi="o"
+            twt = 2;
+            //mówi="o"
         }else{
-            mówi="z"
+            if(twt!=0)twt--
+            //mówi="z"
         }
+        if(twt==0) mówi="z"
+        else mówi = "o"
     }
     })
     .catch(function(err) {
